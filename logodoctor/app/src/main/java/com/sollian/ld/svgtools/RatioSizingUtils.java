@@ -6,6 +6,8 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
 
+import com.sollian.ld.R;
+
 public class RatioSizingUtils {
 
     public static class RatioSizingInfo {

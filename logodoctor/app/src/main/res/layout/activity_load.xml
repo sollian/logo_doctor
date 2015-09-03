@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:src="@mipmap/back" />
 
-        <com.sollian.ld.svgtools.AnimatedSvgView
+        <com.example.svgblog.AnimatedSvgView
             android:id="@+id/animated_svg_view"
             android:layout_width="270dp"
             android:layout_height="wrap_content"

@@ -28,7 +28,7 @@ public class LoadActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_load);
+        setContentView(R.layout.activity_main);
 
         mInitialLogoOffset = TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP, 49, getResources()

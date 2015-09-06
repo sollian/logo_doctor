@@ -16,8 +16,6 @@
 
 package com.sollian.ld.svgtools;
 
-import java.text.ParseException;
-
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -29,18 +27,17 @@ import android.graphics.PathMeasure;
 import android.graphics.PointF;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 
 import com.sollian.ld.R;
+import com.sollian.ld.utils.LDUtils;
+
+import java.text.ParseException;
 
 public class AnimatedSvgView extends View {
-
-    private static final String TAG = "AnimatedSvgView";
-
     private int mTraceTime = 2000;
     private int mTraceTimePerGlyph = 1000;
     private int mFillStart = 1200;
@@ -100,8 +97,7 @@ public class AnimatedSvgView extends View {
         mFillPaint.setAntiAlias(true);
         mFillPaint.setStyle(Paint.Style.FILL);
 
-        mMarkerLength = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                MARKER_LENGTH_DIP, getResources().getDisplayMetrics());
+        mMarkerLength = LDUtils.dp2px(getContext(), MARKER_LENGTH_DIP);
 
         mTraceColors = new int[1];
         mTraceColors[0] = Color.BLACK;
@@ -110,26 +106,25 @@ public class AnimatedSvgView extends View {
 
         if (attrs != null) {
             TypedArray a = context.obtainStyledAttributes(attrs,
-                    R.styleable.AnimatedSvgView);
+                R.styleable.AnimatedSvgView);
 
             mViewportWidth = a.getInt(
-                    R.styleable.AnimatedSvgView_oakSvgImageSizeX, 433);
-            Log.i(TAG, "mViewportWidth=" + mViewportWidth);
+                R.styleable.AnimatedSvgView_oakSvgImageSizeX, 433);
             mRatioSizingInfo.aspectRatioWidth = a.getInt(
-                    R.styleable.AnimatedSvgView_oakSvgImageSizeX, 433);
+                R.styleable.AnimatedSvgView_oakSvgImageSizeX, 433);
             mViewportHeight = a.getInt(
-                    R.styleable.AnimatedSvgView_oakSvgImageSizeY, 433);
+                R.styleable.AnimatedSvgView_oakSvgImageSizeY, 433);
             mRatioSizingInfo.aspectRatioHeight = a.getInt(
-                    R.styleable.AnimatedSvgView_oakSvgImageSizeY, 433);
+                R.styleable.AnimatedSvgView_oakSvgImageSizeY, 433);
 
             mTraceTime = a.getInt(R.styleable.AnimatedSvgView_oakSvgTraceTime,
-                    2000);
+                2000);
             mTraceTimePerGlyph = a.getInt(
-                    R.styleable.AnimatedSvgView_oakSvgTraceTimePerGlyph, 1000);
+                R.styleable.AnimatedSvgView_oakSvgTraceTimePerGlyph, 1000);
             mFillStart = a.getInt(R.styleable.AnimatedSvgView_oakSvgFillStart,
-                    1200);
+                1200);
             mFillTime = a.getInt(R.styleable.AnimatedSvgView_oakSvgFillTime,
-                    1000);
+                1000);
 
             a.recycle();
 
@@ -156,7 +151,7 @@ public class AnimatedSvgView extends View {
 
     /**
      * 设置轮廓颜色
-     * 
+     *
      * @param traceResidueColors
      */
     public void setTraceResidueColors(int[] traceResidueColors) {
@@ -165,7 +160,7 @@ public class AnimatedSvgView extends View {
 
     /**
      * 设置跑动光线颜色
-     * 
+     *
      * @param traceColors
      */
     public void setTraceColors(int[] traceColors) {
@@ -174,14 +169,14 @@ public class AnimatedSvgView extends View {
 
     /**
      * 设置Path填充颜色
-     * 
+     *
      * @param fillAlphas
      * @param fillReds
      * @param fillGreens
      * @param fillBlues
      */
     public void setFillPaints(int[] fillAlphas, int[] fillReds,
-            int[] fillGreens, int[] fillBlues) {
+                              int[] fillGreens, int[] fillBlues) {
         mFillAlphas = fillAlphas;
         mFillReds = fillReds;
         mFillGreens = fillGreens;
@@ -217,12 +212,12 @@ public class AnimatedSvgView extends View {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         RatioSizingUtils.RatioMeasureInfo rmi = RatioSizingUtils
-                .getMeasureInfo(widthMeasureSpec, heightMeasureSpec,
-                        mRatioSizingInfo, 0, 0);
+            .getMeasureInfo(widthMeasureSpec, heightMeasureSpec,
+                mRatioSizingInfo, 0, 0);
 
         super.onMeasure(
-                MeasureSpec.makeMeasureSpec(rmi.width, MeasureSpec.EXACTLY),
-                MeasureSpec.makeMeasureSpec(rmi.height, MeasureSpec.EXACTLY));
+            MeasureSpec.makeMeasureSpec(rmi.width, MeasureSpec.EXACTLY),
+            MeasureSpec.makeMeasureSpec(rmi.height, MeasureSpec.EXACTLY));
     }
 
     private void rebuildGlyphData() {
@@ -237,9 +232,9 @@ public class AnimatedSvgView extends View {
                 return y * mHeight / mViewport.y;
             }
         };
-
-        Log.i(TAG, "---mWidth = " + mWidth + "---mViewport.x = " + mViewport.x);
-        Log.i(TAG, "mGlyphStrings.length = " + mGlyphStrings.length);
+        if (mGlyphStrings == null || mGlyphStrings.length == 0) {
+            return;
+        }
         mGlyphData = new GlyphData[mGlyphStrings.length];
         for (int i = 0; i < mGlyphStrings.length; i++) {
             mGlyphData[i] = new GlyphData();
@@ -247,12 +242,11 @@ public class AnimatedSvgView extends View {
                 mGlyphData[i].path = parser.parsePath(mGlyphStrings[i]);
             } catch (ParseException e) {
                 mGlyphData[i].path = new Path();
-                Log.e(TAG, "Couldn't parse path", e);
             }
             PathMeasure pm = new PathMeasure(mGlyphData[i].path, true);
             while (true) {
                 mGlyphData[i].length = Math.max(mGlyphData[i].length,
-                        pm.getLength());
+                    pm.getLength());
                 if (!pm.nextContour()) {
                     break;
                 }
@@ -262,8 +256,8 @@ public class AnimatedSvgView extends View {
             mGlyphData[i].paint.setAntiAlias(true);
             mGlyphData[i].paint.setColor(Color.WHITE);
             mGlyphData[i].paint.setStrokeWidth(TypedValue.applyDimension(
-                    TypedValue.COMPLEX_UNIT_DIP, 1, getResources()
-                            .getDisplayMetrics()));
+                TypedValue.COMPLEX_UNIT_DIP, 1, getResources()
+                    .getDisplayMetrics()));
         }
     }
 
@@ -279,20 +273,20 @@ public class AnimatedSvgView extends View {
         // 绘制出现前的边沿线和跑动过程
         for (int i = 0; i < mGlyphData.length; i++) {
             float phase = MathUtil.constrain(0, 1,
-                    (t - (mTraceTime - mTraceTimePerGlyph) * i * 1f
-                            / mGlyphData.length)
-                            * 1f / mTraceTimePerGlyph);
+                (t - (mTraceTime - mTraceTimePerGlyph) * i * 1f
+                    / mGlyphData.length)
+                    * 1f / mTraceTimePerGlyph);
             float distance = INTERPOLATOR.getInterpolation(phase)
-                    * mGlyphData[i].length;
+                * mGlyphData[i].length;
             mGlyphData[i].paint.setColor(mTraceResidueColors[i]);
-            mGlyphData[i].paint.setPathEffect(new DashPathEffect(new float[] {
-                    distance, mGlyphData[i].length }, 0));
+            mGlyphData[i].paint.setPathEffect(new DashPathEffect(new float[]{
+                distance, mGlyphData[i].length}, 0));
             canvas.drawPath(mGlyphData[i].path, mGlyphData[i].paint);
 
             mGlyphData[i].paint.setColor(mTraceColors[i]);
-            mGlyphData[i].paint.setPathEffect(new DashPathEffect(new float[] {
-                    0, distance, phase > 0 ? mMarkerLength : 0,
-                    mGlyphData[i].length }, 0));
+            mGlyphData[i].paint.setPathEffect(new DashPathEffect(new float[]{
+                0, distance, phase > 0 ? mMarkerLength : 0,
+                mGlyphData[i].length}, 0));
             canvas.drawPath(mGlyphData[i].path, mGlyphData[i].paint);
         }
 
@@ -303,12 +297,12 @@ public class AnimatedSvgView extends View {
 
             // 绘制渐变出现的过程，即改变alpha过程
             float phase = MathUtil.constrain(0, 1, (t - mFillStart) * 1f
-                    / mFillTime);
+                / mFillTime);
             for (int i = 0; i < mGlyphData.length; i++) {
                 GlyphData glyphData = mGlyphData[i];
                 mFillPaint.setARGB((int) (phase
                         * ((float) mFillAlphas[i] / (float) 255) * 255),
-                        mFillReds[i], mFillGreens[i], mFillBlues[i]);
+                    mFillReds[i], mFillGreens[i], mFillBlues[i]);
                 canvas.drawPath(glyphData.path, mFillPaint);
             }
         }
@@ -332,11 +326,11 @@ public class AnimatedSvgView extends View {
     }
 
     public void setOnStateChangeListener(
-            OnStateChangeListener onStateChangeListener) {
+        OnStateChangeListener onStateChangeListener) {
         mOnStateChangeListener = onStateChangeListener;
     }
 
-    public static interface OnStateChangeListener {
+    public interface OnStateChangeListener {
 
         void onStateChange(int state);
     }

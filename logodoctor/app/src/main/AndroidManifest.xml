@@ -3,10 +3,15 @@
     package="com.sollian.ld">
 
     <application
+        android:name=".LDApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:hardwareAccelerated="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".LoadActivity">
+        <activity android:name=".LoadActivity"
+            android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

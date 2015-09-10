@@ -1,25 +1,27 @@
 package com.sollian.ld;
 
+import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.nineoldandroids.view.ViewHelper;
 import com.sollian.ld.svgtools.AnimatedSvgView;
 import com.sollian.ld.svgtools.SvgPathUtil;
+import com.sollian.ld.utils.IntentUtils;
 import com.sollian.ld.utils.LDUtils;
 
 public class LoadActivity extends BaseActivity {
+    private static final int SVG_OFFSET_DP = 50;
 
     private TextView vVersion;
     private AnimatedSvgView vAnimatedSvg;
-    private float logoOffset;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,11 +36,8 @@ public class LoadActivity extends BaseActivity {
         vVersion.setText(LDUtils.getAppVersionName());
         vVersion.setVisibility(View.GONE);
 
-        logoOffset = LDUtils.dp2px(this, 50);
-
-        Button mReset = (Button) findViewById(R.id.reset);
         vAnimatedSvg = (AnimatedSvgView) findViewById(R.id.animated_svg_view);
-        ViewHelper.setTranslationY(vAnimatedSvg, logoOffset);
+        ViewHelper.setTranslationY(vAnimatedSvg, LDUtils.dp2px(this, SVG_OFFSET_DP));
 
         vAnimatedSvg.setGlyphStrings(SvgPathUtil.getSvgPath(this));
 
@@ -61,35 +60,52 @@ public class LoadActivity extends BaseActivity {
         vAnimatedSvg.setTraceColors(traceColors);
         vAnimatedSvg.setTraceResidueColors(residueColors);
 
-        mReset.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                vAnimatedSvg.reset();
-                ViewHelper
-                    .setTranslationY(vAnimatedSvg, logoOffset);
-
-                animateLogo();
-            }
-        });
-
         vAnimatedSvg
             .setOnStateChangeListener(new AnimatedSvgView.OnStateChangeListener() {
                 @Override
                 public void onStateChange(int state) {
                     if (state == AnimatedSvgView.STATE_FILL_STARTED) {
-
+                        vVersion.setVisibility(View.VISIBLE);
                         AnimatorSet set = new AnimatorSet();
                         Interpolator interpolator = new DecelerateInterpolator();
                         ObjectAnimator a1 = ObjectAnimator.ofFloat(
                             vAnimatedSvg, "translationY", 0);
                         ObjectAnimator a2 = ObjectAnimator.ofFloat(
-                            vVersion, "alpha", 0);
+                            vVersion, "alpha", 0, 255);
                         a1.setInterpolator(interpolator);
-                        set.setDuration(1000).play(a1);
+                        set.setDuration(1000).playTogether(a1, a2);
                         set.start();
+                        set.addListener(new Animator.AnimatorListener() {
+                            @Override
+                            public void onAnimationStart(Animator animation) {
+                            }
+
+                            @Override
+                            public void onAnimationEnd(Animator animation) {
+                                vAnimatedSvg.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        goMain();
+                                    }
+                                }, 1000);
+                            }
+
+                            @Override
+                            public void onAnimationCancel(Animator animation) {
+                            }
+
+                            @Override
+                            public void onAnimationRepeat(Animator animation) {
+                            }
+                        });
                     }
                 }
             });
+    }
+
+    private void goMain() {
+        IntentUtils.startActivity(this, new Intent(this, MainActivity.class));
+        finish();
     }
 
     private void animateLogo() {

@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 
 /**
- * Created by john on 2015/9/6.
+ * Created by sollian on 2015/9/6.
  */
 public class IntentUtils {
     public static void startActivity(Activity activity, Intent intent) {

@@ -1,5 +1,7 @@
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:oak="http://schemas.android.com/apk/res-auto">
+<merge
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:oak="http://schemas.android.com/apk/res-auto"
+    >
 
     <com.sollian.ld.svgtools.AnimatedSvgView
         android:id="@+id/animated_svg_view"
@@ -11,7 +13,7 @@
         oak:oakSvgImageSizeX="410"
         oak:oakSvgImageSizeY="410"
         oak:oakSvgTraceTime="2000"
-        oak:oakSvgTraceTimePerGlyph="1500" />
+        oak:oakSvgTraceTimePerGlyph="1500"/>
 
     <TextView
         android:id="@+id/version"
@@ -20,5 +22,5 @@
         android:layout_gravity="bottom|center_horizontal"
         android:layout_marginBottom="10dp"
         android:hint="version"
-        android:textColor="@android:color/black" />
+        android:textColor="@android:color/black"/>
 </merge>

@@ -54,7 +54,6 @@ class mysql
 
     function fetchall($result)
     {
-        $arr[] = array();
         while ($row = mysql_fetch_array($result)) {
             $arr[] = $row;
         }

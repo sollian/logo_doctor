@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+
+    <TextView
+        android:id="@+id/head"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/item_head"
+        android:background="@android:color/darker_gray"
+        android:gravity="left|center_vertical"
+        android:paddingLeft="20dp"
+        android:text="A"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/text_large"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+
+        <smartimageview.SmartImageView
+            android:id="@+id/logo"
+            android:layout_width="@dimen/item_img"
+            android:layout_height="@dimen/item_img"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_launcher"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/item_img"
+            android:orientation="vertical"
+            >
+
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="name"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/text_large"
+                />
+
+            <TextView
+                android:id="@+id/extra"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="extra"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="@dimen/text_large"
+                />
+
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,42 @@
+<LinearLayout
+    style="@style/Linearlayout_Root"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+
+    <EditText
+        style="@style/EditText_Name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+
+    <EditText
+        style="@style/EditText_Pwd"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+
+    <EditText
+        android:id="@+id/pwd_confirm"
+        style="@style/EditText_Pwd"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/password_confirm"
+        />
+
+    <Button
+        android:id="@+id/bt_signup"
+        style="@style/Button_login"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/sign_up"
+        />
+
+    <TextView
+        android:id="@+id/tv_gologin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/back_to_login"
+        android:textColor="@android:color/holo_green_dark"
+        android:textStyle="italic"
+        />
+</LinearLayout>

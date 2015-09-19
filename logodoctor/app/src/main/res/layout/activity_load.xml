@@ -3,7 +3,7 @@
     xmlns:oak="http://schemas.android.com/apk/res-auto"
     >
 
-    <com.sollian.ld.svgtools.AnimatedSvgView
+    <com.sollian.ld.views.svgview.AnimatedSvgView
         android:id="@+id/animated_svg_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

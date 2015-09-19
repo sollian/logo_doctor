@@ -1,5 +1,12 @@
 <resources>
     <string name="app_name">logo博士</string>
 
-    <string name="title_activity_load">LoadActivity</string>
+    <string name="ok">确定</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_look_around">LookAroundActivity</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
 </resources>

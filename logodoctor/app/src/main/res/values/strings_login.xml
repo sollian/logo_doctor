@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="name">用户名</string>
+    <string name="password">密码</string>
+    <string name="password_confirm">确认密码</string>
+    <string name="mark_not_null">*</string>
+    <string name="login">登录</string>
+    <string name="sign_up">注册</string>
+    <string name="back_to_login">返回登录</string>
+    <string name="go_sign_up">我要注册</string>
+</resources>

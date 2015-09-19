@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Linearlayout_Root">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:animateLayoutChanges">true</item>
+    </style>
+
+    <style name="EditText_Name">
+        <item name="android:id">@id/name</item>
+        <item name="android:inputType">text</item>
+        <item name="android:hint">@string/name</item>
+    </style>
+
+    <style name="EditText_Pwd">
+        <item name="android:id">@id/pwd</item>
+        <item name="android:inputType">textPassword</item>
+        <item name="android:hint">@string/password</item>
+    </style>
+
+    <style name="Button_login">
+        <item name="android:layout_width">250dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">20dp</item>
+        <item name="android:background">@drawable/btn_login_selector</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+</resources>

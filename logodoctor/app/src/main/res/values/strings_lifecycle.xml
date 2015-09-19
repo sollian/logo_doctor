@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="lifecycle_onAttach">----onAttach</string>
+    <string name="lifecycle_onCreate">----onCreate</string>
+    <string name="lifecycle_onActivityCreate">----onActivityCreate</string>
+    <string name="lifecycle_onStart">----onStart</string>
+    <string name="lifecycle_onPostCreate">----onPostCreate</string>
+    <string name="lifecycle_onResume">----onResume</string>
+    <string name="lifecycle_onPostResume">----onPostResume</string>
+    <string name="lifecycle_onPause">----onPause</string>
+    <string name="lifecycle_onStop">----onStop</string>
+    <string name="lifecycle_onDestroyView">----onDestroyView</string>
+    <string name="lifecycle_onDestroy">----onDestroy</string>
+    <string name="lifecycle_onDetach">----onDetach</string>
+</resources>

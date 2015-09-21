@@ -1,6 +1,8 @@
 package com.sollian.ld.views.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -8,9 +10,14 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.sollian.ld.BaseActivity;
 import com.sollian.ld.R;
+import com.sollian.ld.business.LDCallback;
+import com.sollian.ld.business.LDResponse;
+import com.sollian.ld.business.net.NetManager;
 import com.sollian.ld.models.Logo;
+import com.sollian.ld.utils.IntentUtil;
+import com.sollian.ld.utils.LDUtil;
+import com.sollian.ld.views.BaseActivity;
 import com.sollian.ld.views.adapter.LogoSortAdapter;
 import com.sollian.ld.views.otherview.ClearEditText;
 import com.sollian.ld.views.otherview.SideIndexBar;
@@ -33,6 +40,8 @@ public class LookAroundActivity extends BaseActivity {
         setContentView(R.layout.activity_look_around);
 
         init();
+
+        getData();
     }
 
     private void init() {
@@ -40,6 +49,7 @@ public class LookAroundActivity extends BaseActivity {
 
         ClearEditText clearEditText = (ClearEditText) findViewById(R.id.search);
         clearEditText.setFocusable(false);
+        clearEditText.setFocusableInTouchMode(true);
         clearEditText.addTextChangedListener(new MyTextWatcher());
 
         TextView vToast = (TextView) findViewById(R.id.toast);
@@ -58,7 +68,33 @@ public class LookAroundActivity extends BaseActivity {
         TitlebarHelper titlebarHelper = new TitlebarHelper(this);
         titlebarHelper.showRight(false);
         titlebarHelper.showLeft(true);
+        titlebarHelper.getLeft().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
         titlebarHelper.setTitle(R.string.look_around);
+    }
+
+    private void getData() {
+        showProgressDialog(LDUtil.MSG_LOADING);
+        NetManager.asyncQueryAllLogo(this, new QueryAllLogoCallback());
+    }
+
+    private class QueryAllLogoCallback implements LDCallback {
+
+        @Override
+        public void callback(@NonNull LDResponse response) {
+            hideProgressDialog();
+            if (response.success()) {
+                dataSource.clear();
+                dataSource.addAll((List<Logo>) response.getObj());
+                adapter.notifyDataSetChanged();
+            } else {
+                LDUtil.toast(response.getErrorMsg());
+            }
+        }
     }
 
     private class MyLetterChangeListener implements SideIndexBar.OnTouchingLetterChangedListener {
@@ -76,7 +112,9 @@ public class LookAroundActivity extends BaseActivity {
     private class MyItemClickListener implements AdapterView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+            Intent intent = new Intent(LookAroundActivity.this, LogoDetailActivity.class);
+            intent.putExtra(LogoDetailActivity.KEY_ID, adapter.getItem(position).getId());
+            IntentUtil.startActivity(LookAroundActivity.this, intent);
         }
     }
 

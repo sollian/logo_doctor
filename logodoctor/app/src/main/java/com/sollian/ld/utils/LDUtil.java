@@ -12,6 +12,8 @@ import android.widget.Toast;
  */
 public class LDUtil {
     private static Application context;
+    public static final String MSG_DATA_ERROR = "数据错误";
+    public static final String MSG_LOADING = "正在加载";
 
     public static void setContext(Application context) {
         LDUtil.context = context;

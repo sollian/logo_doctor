@@ -4,7 +4,7 @@ package com.sollian.ld.views.fragment;
 import android.content.Intent;
 import android.text.TextUtils;
 
-import com.sollian.ld.BaseFragment;
+import com.sollian.ld.views.BaseFragment;
 import com.sollian.ld.utils.IntentUtil;
 import com.sollian.ld.views.activity.MainActivity;
 import com.sollian.ld.views.titlebar.TitlebarHelper;

@@ -45,6 +45,7 @@ public abstract class AbsBaseAdapter<T> extends BaseAdapter {
             convertView = inflater.inflate(getLayoutResId(), null);
             holder = getHolder();
             holder.onBindView(convertView);
+            convertView.setTag(holder);
         } else {
             holder = (IHolder) convertView.getTag();
         }

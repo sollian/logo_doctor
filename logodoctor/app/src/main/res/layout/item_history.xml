@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
+
+    <smartimageview.SmartImageView
+        android:id="@+id/img"
+        android:layout_width="@dimen/item_img"
+        android:layout_height="@dimen/item_img"
+        android:scaleType="fitXY"
+        tools:src="@drawable/ic_launcher"
+        />
+
+    <TextView
+        android:id="@+id/date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/text_large"
+        tools:text="date"
+        />
+
+    <TextView
+        android:id="@+id/mark"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:background="@drawable/tv_bg_red"
+        android:padding="2dp"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/text_small"
+        tools:text="处理中"
+        />
+
+
+</LinearLayout>

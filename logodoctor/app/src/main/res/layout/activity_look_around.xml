@@ -23,6 +23,7 @@
         android:hint="请输入关键字"
         android:singleLine="true"
         android:textSize="@dimen/text_mornal"
+        android:visibility="gone"
         />
 
     <FrameLayout

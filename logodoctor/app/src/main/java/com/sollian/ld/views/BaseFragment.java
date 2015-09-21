@@ -1,10 +1,11 @@
-package com.sollian.ld;
+package com.sollian.ld.views;
 
 
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 
+import com.sollian.ld.R;
 import com.sollian.ld.utils.LogUtil;
 
 public class BaseFragment extends Fragment {

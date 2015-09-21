@@ -1,4 +1,4 @@
-package com.sollian.ld;
+package com.sollian.ld.views;
 
 import android.app.Application;
 

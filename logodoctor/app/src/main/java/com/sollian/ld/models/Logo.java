@@ -1,17 +1,27 @@
 package com.sollian.ld.models;
 
+import com.sollian.ld.business.net.NetManager;
 import com.sollian.ld.utils.pinyinutils.IPinYin;
 
 /**
  * Created by sollian on 2015/9/18.
  */
-public class Logo implements IPinYin {
+public class Logo implements IPinYin, IWrapImg {
+    private String id;
     private String name;
-    private String imgUrl;
+    private String img;
     private String category;
     private String extra;
     private String desc;
     private String sortLetters;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
@@ -21,12 +31,12 @@ public class Logo implements IPinYin {
         this.name = name;
     }
 
-    public String getImgUrl() {
-        return imgUrl;
+    public String getImg() {
+        return img;
     }
 
-    public void setImgUrl(String imgUrl) {
-        this.imgUrl = imgUrl;
+    public void setImg(String img) {
+        this.img = img;
     }
 
     public String getCategory() {
@@ -55,6 +65,11 @@ public class Logo implements IPinYin {
 
     public String getSortLetters() {
         return sortLetters;
+    }
+
+    @Override
+    public String getWrappedImg() {
+        return NetManager.BASE_URL + getImg();
     }
 
     public void setSortLetters(String sortLetters) {

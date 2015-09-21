@@ -1,9 +1,11 @@
-package com.sollian.ld;
+package com.sollian.ld.views;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 
+import com.sollian.ld.R;
 import com.sollian.ld.utils.LDUtil;
 import com.sollian.ld.utils.LogUtil;
 
@@ -16,6 +18,8 @@ public class BaseActivity extends FragmentActivity {
     private int backCounter = 0;
     private boolean backFlag = false;
     private Handler backHandler;
+
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +67,23 @@ public class BaseActivity extends FragmentActivity {
     protected void onDestroy() {
         super.onDestroy();
         LogUtil.lifeCycle(getClass().getSimpleName() + getString(R.string.lifecycle_onDestroy));
+    }
+
+    public void showProgressDialog(CharSequence message) {
+        if (progressDialog == null) {
+            progressDialog = new ProgressDialog(this);
+            progressDialog.setIndeterminate(true);
+            progressDialog.setCancelable(false);
+            progressDialog.setCanceledOnTouchOutside(false);
+        }
+        progressDialog.setMessage(message);
+        progressDialog.show();
+    }
+
+    public void hideProgressDialog() {
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.hide();
+        }
     }
 
     protected void setDoubleClickToExit(boolean flag) {

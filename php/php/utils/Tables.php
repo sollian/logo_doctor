@@ -6,3 +6,4 @@
  * Time: 20:59
  */
 define("TABLE_LOGO", "logo");
+define("TABLE_HISTORY", "history");

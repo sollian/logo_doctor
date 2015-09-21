@@ -5,9 +5,9 @@
  * Date: 2015/9/18
  * Time: 19:34
  */
-include_once "Tables.php";
-include_once "MySql.php";
-include_once "Logo.php";
+include_once "utils/Tables.php";
+include_once "utils/MySql.php";
+include_once "model/Logo.php";
 
 define("QUERY_ALL", "select `id`, `name`, `img`, `extra`, `category` from " . TABLE_LOGO);
 define("QUERY_ID", "select * from " . TABLE_LOGO . " where id=");

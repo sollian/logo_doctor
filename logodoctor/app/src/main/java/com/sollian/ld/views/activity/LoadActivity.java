@@ -12,7 +12,7 @@ import android.view.animation.Interpolator;
 import android.widget.TextView;
 
 import com.nineoldandroids.view.ViewHelper;
-import com.sollian.ld.BaseActivity;
+import com.sollian.ld.views.BaseActivity;
 import com.sollian.ld.R;
 import com.sollian.ld.business.local.LocalManager;
 import com.sollian.ld.models.User;

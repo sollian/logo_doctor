@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.sollian.ld.R;
 import com.sollian.ld.models.Logo;
+import com.sollian.ld.utils.pinyinutils.CharacterParser;
 import com.sollian.ld.utils.pinyinutils.PinyinComparator;
 
 import java.util.ArrayList;
@@ -23,13 +24,29 @@ import smartimageview.SmartImageView;
  */
 public class LogoSortAdapter extends AbsBaseAdapter<Logo> implements SectionIndexer, Filterable {
     private Filter filter;
+    private CharacterParser characterParser;
 
     public LogoSortAdapter(Context context, List<Logo> dataSource) {
         super(context, dataSource);
+        characterParser = CharacterParser.getInstance();
         sort();
     }
 
     private void sort() {
+        for(Logo logo : dataSource) {
+            if(TextUtils.isEmpty(logo.getSortLetters())) {
+                // 汉字转换成拼音
+                String pinyin = characterParser.getSelling(logo.getName());
+                String sortString = pinyin.substring(0, 1).toUpperCase();
+
+                // 正则表达式，判断首字母是否是英文字母
+                if (sortString.matches("[A-Z]+")) {
+                    logo.setSortLetters(sortString.toUpperCase());
+                } else {
+                    logo.setSortLetters("#");
+                }
+            }
+        }
         if (dataSource != null && !dataSource.isEmpty()) {
             Collections.sort(dataSource, new PinyinComparator());
         }
@@ -150,7 +167,7 @@ public class LogoSortAdapter extends AbsBaseAdapter<Logo> implements SectionInde
 
         @Override
         public void onBindView(View convertView) {
-            sivImg = (SmartImageView) convertView.findViewById(R.id.logo);
+            sivImg = (SmartImageView) convertView.findViewById(R.id.img);
             tvName = (TextView) convertView.findViewById(R.id.name);
             tvExtra = (TextView) convertView.findViewById(R.id.extra);
             tvHead = (TextView) convertView.findViewById(R.id.head);
@@ -160,8 +177,8 @@ public class LogoSortAdapter extends AbsBaseAdapter<Logo> implements SectionInde
         public void onProcessView(int position, View convertView) {
             Logo item = getItem(position);
 
-            if (!TextUtils.isEmpty(item.getImgUrl())) {
-                sivImg.setImageUrl(item.getImgUrl(), R.drawable.ic_launcher, R.drawable.ic_launcher);
+            if (!TextUtils.isEmpty(item.getWrappedImg())) {
+                sivImg.setImageUrl(item.getWrappedImg(), R.drawable.ic_launcher, R.drawable.ic_launcher);
             } else {
                 sivImg.setImageResource(R.drawable.ic_launcher);
             }

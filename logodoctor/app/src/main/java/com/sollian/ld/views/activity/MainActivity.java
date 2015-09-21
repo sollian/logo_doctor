@@ -5,11 +5,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
-import com.sollian.ld.BaseActivity;
 import com.sollian.ld.R;
+import com.sollian.ld.models.History;
 import com.sollian.ld.utils.IntentUtil;
 import com.sollian.ld.utils.LDUtil;
 import com.sollian.ld.utils.ThreadUtil;
+import com.sollian.ld.views.BaseActivity;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener {
 
@@ -64,7 +65,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         } else if (view == tvLookAround) {
             intent = new Intent(this, LookAroundActivity.class);
         } else if (view == tvHistory) {
-            LDUtil.toast(getString(R.string.history));
+            intent = new Intent(this, HistoryActivity.class);
         }
         if (intent != null) {
             IntentUtil.startActivity(this, intent);

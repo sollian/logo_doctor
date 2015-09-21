@@ -3,7 +3,7 @@ package com.sollian.ld.views.activity;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 
-import com.sollian.ld.BaseActivity;
+import com.sollian.ld.views.BaseActivity;
 import com.sollian.ld.R;
 import com.sollian.ld.views.fragment.BaseLoginFragment;
 import com.sollian.ld.views.fragment.LoginFragment;

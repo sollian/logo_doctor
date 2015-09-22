@@ -6,9 +6,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.sollian.ld.R;
-import com.sollian.ld.models.History;
 import com.sollian.ld.utils.IntentUtil;
-import com.sollian.ld.utils.LDUtil;
 import com.sollian.ld.utils.ThreadUtil;
 import com.sollian.ld.views.BaseActivity;
 
@@ -59,9 +57,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     public void onClick(View view) {
         Intent intent = null;
         if (view == tvTakePic) {
-            LDUtil.toast(getString(R.string.take_pic));
+            intent = new Intent(this, ObtainLogoActivity.class);
+            intent.putExtra(ObtainLogoActivity.KEY_MODE, ObtainLogoActivity.TAKE_PHOTO);
         } else if (view == tvViewPic) {
-            LDUtil.toast(getString(R.string.view_pic));
+            intent = new Intent(this, ObtainLogoActivity.class);
+            intent.putExtra(ObtainLogoActivity.KEY_MODE, ObtainLogoActivity.PICK_PHOTO);
         } else if (view == tvLookAround) {
             intent = new Intent(this, LookAroundActivity.class);
         } else if (view == tvHistory) {

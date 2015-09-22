@@ -47,6 +47,14 @@
             android:name=".views.activity.HistoryActivity"
             android:screenOrientation="portrait"
             />
+        <activity
+            android:name=".views.activity.HistoryDetailActivity"
+            android:screenOrientation="portrait"
+            />
+        <activity
+            android:name=".views.activity.ObtainLogoActivity"
+            android:screenOrientation="portrait"
+            />
     </application>
 
 </manifest>

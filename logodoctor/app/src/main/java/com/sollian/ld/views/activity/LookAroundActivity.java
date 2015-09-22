@@ -19,6 +19,7 @@ import com.sollian.ld.utils.IntentUtil;
 import com.sollian.ld.utils.LDUtil;
 import com.sollian.ld.views.BaseActivity;
 import com.sollian.ld.views.adapter.LogoSortAdapter;
+import com.sollian.ld.views.fragment.LogoDetailFragment;
 import com.sollian.ld.views.otherview.ClearEditText;
 import com.sollian.ld.views.otherview.SideIndexBar;
 import com.sollian.ld.views.titlebar.TitlebarHelper;
@@ -113,7 +114,7 @@ public class LookAroundActivity extends BaseActivity {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             Intent intent = new Intent(LookAroundActivity.this, LogoDetailActivity.class);
-            intent.putExtra(LogoDetailActivity.KEY_ID, adapter.getItem(position).getId());
+            intent.putExtra(LogoDetailFragment.KEY_ID, adapter.getItem(position).getId());
             IntentUtil.startActivity(LookAroundActivity.this, intent);
         }
     }

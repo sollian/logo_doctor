@@ -55,8 +55,12 @@ public class HistoryAdpater extends AbsBaseAdapter<History> {
 
             if (item.isProcessing()) {
                 tvMark.setVisibility(View.VISIBLE);
-                tvMark.setBackgroundResource(R.drawable.tv_bg_red);
+                tvMark.setBackgroundResource(R.drawable.tv_bg_yellow);
                 tvMark.setText(R.string.processing);
+            } else if (!item.isSuccess()) {
+                tvMark.setVisibility(View.VISIBLE);
+                tvMark.setBackgroundResource(R.drawable.tv_bg_red);
+                tvMark.setText(R.string.failed);
             } else if (!item.isRead()) {
                 tvMark.setVisibility(View.VISIBLE);
                 tvMark.setBackgroundResource(R.drawable.tv_bg_green);

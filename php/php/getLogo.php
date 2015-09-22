@@ -9,8 +9,8 @@ include_once "utils/Tables.php";
 include_once "utils/MySql.php";
 include_once "model/Logo.php";
 
-define("QUERY_ALL", "select `id`, `name`, `img`, `extra`, `category` from " . TABLE_LOGO);
-define("QUERY_ID", "select * from " . TABLE_LOGO . " where id=");
+define("QUERY_ALL", "SELECT `id`, `name`, `img`, `extra`, `category` FROM " . TABLE_LOGO);
+define("QUERY_ID", "SELECT * FROM " . TABLE_LOGO . " WHERE id=");
 
 if (is_array($_GET) && count($_GET) > 0) {
     if (isset($_GET["id"])) {

@@ -3,7 +3,7 @@
 
     <string name="ok">确定</string>
 
-    <string name="logo_detail">详细信息</string>
+    <string name="detail">详细信息</string>
 
     <string name="listfooterview_normal">查看更多</string>
     <string name="listfooterview_ready">松开载入更多</string>
@@ -11,4 +11,9 @@
     <string name="empty_history">您还没有历史记录</string>
     <string name="processing">处理中</string>
     <string name="unread">未读</string>
+    <string name="failed">识别失败</string>
+
+    <string name="result">识别结果：</string>
+
+    <string name="obtain_photo">识别图片</string>
 </resources>

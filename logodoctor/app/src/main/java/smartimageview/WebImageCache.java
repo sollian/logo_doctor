@@ -27,7 +27,9 @@ public class WebImageCache {
         mDiskCachePath = FileUtil.getDirectory(FileUtil.DIR_IMG);
         if (mDiskCachePath != null) {
             File outFile = new File(mDiskCachePath);
-            outFile.mkdirs();
+            if (!outFile.exists()) {
+                outFile.mkdirs();
+            }
             mDiskCacheEnabled = outFile.exists();
         }
     }

@@ -12,6 +12,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.sollian.ld.business.LDCallback;
 import com.sollian.ld.business.LDResponse;
+import com.sollian.ld.models.History;
 import com.sollian.ld.models.Logo;
 import com.sollian.ld.models.User;
 import com.sollian.ld.utils.HttpManager;
@@ -27,6 +28,8 @@ import java.util.List;
 public class NetManager {
     private static final String ERROR_DEFAULT = "未知错误";
     private static final String ERROR_NO_DATA = "无数据";
+
+    public static final int LIMIT = 20;
     /**
      * 服务器地址
      */
@@ -34,6 +37,8 @@ public class NetManager {
     private static final String BASE_PAGE_URL = BASE_URL + "/php/";
     private static final String QUERY_LOGO_ALL = BASE_PAGE_URL + "getLogo.php";
     private static final String QUERY_LOGO_ID = BASE_PAGE_URL + "getLogo.php?id=";
+    private static final String QUERY_HISTORY = BASE_PAGE_URL + "getHistory.php?minId=";
+    private static final String SET_HISTORY_READ = BASE_PAGE_URL + "setHistoryRead.php?id=";
 
 
     public static void asyncLogin(@NonNull String name, @NonNull String pwd, final LDCallback callback) {
@@ -118,6 +123,51 @@ public class NetManager {
                 }
             }
         });
+    }
+
+    public static void asyncQueryHistory(final Activity activity, final String minId, final LDCallback callback) {
+        netQuery(activity, QUERY_HISTORY + minId, new OnNetQueryDoneListener() {
+            @Override
+            public void onNetQueryDone(String data) {
+                if (callback != null) {
+                    LDResponse<List<History>> netResponse = new LDResponse<>();
+                    if (TextUtils.isEmpty(data)) {
+                        netResponse.setErrorMsg(ERROR_NO_DATA);
+                    } else {
+                        Type listType = new TypeToken<ArrayList<History>>() {
+                        }.getType();
+                        Gson gson = new Gson();
+                        ArrayList<History> histories = gson.fromJson(data, listType);
+                        netResponse.setObj(histories);
+                    }
+                    callback.callback(netResponse);
+                }
+            }
+        });
+
+    }
+
+    /**
+     * 将History设置为已读，成功则返回受影响的个数
+     */
+    public static void asyncSetHistoryRead(final Activity activity, final String id, final LDCallback callback) {
+        netQuery(activity, SET_HISTORY_READ + id, new OnNetQueryDoneListener() {
+            @Override
+            public void onNetQueryDone(String data) {
+                if (callback != null) {
+                    LDResponse<String> netResponse = new LDResponse<>();
+                    if (TextUtils.isEmpty(data)) {
+                        netResponse.setErrorMsg(ERROR_NO_DATA);
+                    }
+                    if (!data.matches("\\d+")) {
+                        netResponse.setErrorMsg(data);
+                    }
+                    netResponse.setObj(data);
+                    callback.callback(netResponse);
+                }
+            }
+        });
+
     }
 
 

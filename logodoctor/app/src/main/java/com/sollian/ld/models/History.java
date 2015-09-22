@@ -1,5 +1,7 @@
 package com.sollian.ld.models;
 
+import android.text.TextUtils;
+
 import com.sollian.ld.business.net.NetManager;
 
 /**
@@ -9,8 +11,14 @@ public class History implements IWrapImg {
     private String id;
     private String img;
     private String logoId;
-    private boolean isRead;
-    private boolean isProcessing;
+    /**
+     * 0未读；1已读
+     */
+    private byte read;
+    /**
+     * 0处理中；1已处理
+     */
+    private byte processing;
     private String createTime;
 
     public String getId() {
@@ -37,20 +45,20 @@ public class History implements IWrapImg {
         this.logoId = logoId;
     }
 
-    public boolean isRead() {
-        return isRead;
+    public byte getRead() {
+        return read;
     }
 
-    public void setIsRead(boolean isRead) {
-        this.isRead = isRead;
+    public void setRead(byte read) {
+        this.read = read;
     }
 
-    public boolean isProcessing() {
-        return isProcessing;
+    public byte getProcessing() {
+        return processing;
     }
 
-    public void setIsProcessing(boolean isProcessing) {
-        this.isProcessing = isProcessing;
+    public void setProcessing(byte processing) {
+        this.processing = processing;
     }
 
     public String getCreateTime() {
@@ -59,6 +67,30 @@ public class History implements IWrapImg {
 
     public void setCreateTime(String createTime) {
         this.createTime = createTime;
+    }
+
+    /**
+     * 重要性由大到小
+     * isProcessing,isSuccess,isRead
+     */
+    public boolean isProcessing() {
+        return getProcessing() == 1;
+    }
+
+    public boolean isSuccess() {
+        if (TextUtils.isEmpty(getLogoId())) {
+            return false;
+        }
+        try {
+            return Long.parseLong(getLogoId()) > 0;
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean isRead() {
+        return getRead() == 1;
     }
 
     @Override

@@ -2,13 +2,16 @@ package com.sollian.ld.views;
 
 
 import android.app.Activity;
-import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 
 import com.sollian.ld.R;
 import com.sollian.ld.utils.LogUtil;
 
 public class BaseFragment extends Fragment {
+
+    private ProgressDialog progressDialog;
 
     @Override
     public void onAttach(Activity activity) {
@@ -68,6 +71,23 @@ public class BaseFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         LogUtil.lifeCycle(getClass().getSimpleName() + getString(R.string.lifecycle_onDetach));
+    }
+
+    public void showProgressDialog(CharSequence message) {
+        if (progressDialog == null) {
+            progressDialog = new ProgressDialog(getActivity());
+            progressDialog.setIndeterminate(true);
+            progressDialog.setCancelable(false);
+            progressDialog.setCanceledOnTouchOutside(false);
+        }
+        progressDialog.setMessage(message);
+        progressDialog.show();
+    }
+
+    public void hideProgressDialog() {
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.hide();
+        }
     }
 
 }

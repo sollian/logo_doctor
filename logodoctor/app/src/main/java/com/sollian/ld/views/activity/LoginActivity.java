@@ -1,7 +1,7 @@
 package com.sollian.ld.views.activity;
 
-import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 
 import com.sollian.ld.views.BaseActivity;
 import com.sollian.ld.R;
@@ -37,7 +37,7 @@ public class LoginActivity extends BaseActivity implements BaseLoginFragment.Cha
 
     @Override
     public void changeMode(Mode mode) {
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         BaseLoginFragment fragment = null;
         switch (mode) {

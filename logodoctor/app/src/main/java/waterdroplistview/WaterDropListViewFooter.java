@@ -99,6 +99,7 @@ public class WaterDropListViewFooter extends LinearLayout {
         LayoutParams lp = (LayoutParams) mContentView.getLayoutParams();
         lp.height = 0;
         mContentView.setLayoutParams(lp);
+        mContentView.setVisibility(View.GONE);
     }
 
     /**
@@ -108,6 +109,7 @@ public class WaterDropListViewFooter extends LinearLayout {
         LayoutParams lp = (LayoutParams) mContentView.getLayoutParams();
         lp.height = LayoutParams.WRAP_CONTENT;
         mContentView.setLayoutParams(lp);
+        mContentView.setVisibility(View.VISIBLE);
     }
 
     private void initView(Context context) {

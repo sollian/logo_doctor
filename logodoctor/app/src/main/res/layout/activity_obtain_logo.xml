@@ -13,9 +13,10 @@
         android:layout_height="@dimen/titlebar_height"
         />
 
-    <FrameLayout
-        android:id="@+id/container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+    <smartimageview.SmartImageView
+        android:id="@+id/img"
+        style="@style/SmartImageView_large"
+        android:src="@drawable/ic_launcher"
+        />
 
 </LinearLayout>

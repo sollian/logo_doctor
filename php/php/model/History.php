@@ -11,23 +11,18 @@ class History
     public $id;
     public $logoId;
     public $img;
-    public $isRead;
-    public $isProcessing;
+    public $read;
+    public $processing;
     public $createTime;
 
-    function __construct($id, $logoId, $img, $isRead, $isProcessing, $createTime)
+    function __construct($id, $logoId, $img, $read, $processing, $createTime)
     {
         $this->id = $id;
         $this->logoId = $logoId;
         $this->img = $img;
-        $this->isRead = $isRead;
-        $this->isProcessing = $isProcessing;
+        $this->read = $read;
+        $this->processing = $processing;
         $this->createTime = $createTime;
-    }
-
-    function toString()
-    {
-        return $this->id . "," . $this->logoId . "," . $this->img . "," . $this->createTime;
     }
 
     public static function getJsons($arr)

@@ -6,7 +6,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 
-import com.sollian.ld.utils.HttpManager;
+import com.sollian.ld.utils.http.HttpManager;
 import com.sollian.ld.utils.ImageUtil;
 
 import java.util.Map;

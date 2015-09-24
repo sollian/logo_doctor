@@ -32,10 +32,9 @@ dependencies {
     compile files('libs/android-async-http-1.4.8.jar')
     compile 'com.nineoldandroids:library:2.4.0'
     compile 'org.jsoup:jsoup:1.8.3'
-    compile 'org.apache.httpcomponents:httpmime:4.5'
-    compile 'org.apache:apache:17'
+    //    compile 'org.apache:apache:17'
     compile 'com.android.support:support-v4:23.0.1'
-    compile 'com.google.android.gms:play-services:7.8.0'
+    //    compile 'com.google.android.gms:play-services:7.8.0'
     //avoscloud-sdk 为 LeanCloud基础包
     compile 'cn.leancloud.android:avoscloud-sdk:v3.+'
     //avoscloud-push 与 Java-WebSocket 为推送与IM需要的包

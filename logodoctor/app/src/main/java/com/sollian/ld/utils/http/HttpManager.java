@@ -1,4 +1,4 @@
-package com.sollian.ld.utils;
+package com.sollian.ld.utils.http;
 
 import android.content.Context;
 import android.text.TextUtils;

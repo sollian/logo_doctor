@@ -11,7 +11,7 @@
     <string name="empty_history">您还没有历史记录</string>
     <string name="processing">处理中</string>
     <string name="unread">未读</string>
-    <string name="failed">识别失败</string>
+    <string name="process_failed">识别失败</string>
 
     <string name="result">识别结果：</string>
 

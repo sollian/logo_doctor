@@ -19,7 +19,7 @@ if (is_array($_GET) && count($_GET) > 0) {
 $mysql = new MySql();
 
 if (isset($id) && $id > 0) {
-    $result = $mysql->query(SET_READ . $id);
+    $mysql->query(SET_READ . $id);
     echo $mysql->affectedrows();
 } else {
     echo "参数错误";

@@ -15,8 +15,8 @@ import com.sollian.ld.business.LDResponse;
 import com.sollian.ld.models.History;
 import com.sollian.ld.models.Logo;
 import com.sollian.ld.models.User;
-import com.sollian.ld.utils.HttpManager;
 import com.sollian.ld.utils.ThreadUtil;
+import com.sollian.ld.utils.http.HttpManager;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -39,6 +39,7 @@ public class NetManager {
     private static final String QUERY_LOGO_ID = BASE_PAGE_URL + "getLogo.php?id=";
     private static final String QUERY_HISTORY = BASE_PAGE_URL + "getHistory.php?minId=";
     private static final String SET_HISTORY_READ = BASE_PAGE_URL + "setHistoryRead.php?id=";
+    public static final String FILE_UPLOAD = BASE_PAGE_URL + "uploadFile.php?user=";
 
 
     public static void asyncLogin(@NonNull String name, @NonNull String pwd, final LDCallback callback) {

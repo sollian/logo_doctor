@@ -7,7 +7,8 @@ import android.widget.TextView;
 
 import com.sollian.ld.R;
 import com.sollian.ld.utils.IntentUtil;
-import com.sollian.ld.utils.ThreadUtil;
+import com.sollian.ld.utils.cache.CacheDispatcher;
+import com.sollian.ld.utils.cache.RemindCache;
 import com.sollian.ld.views.BaseActivity;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener {
@@ -23,6 +24,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         setContentView(R.layout.activity_main);
 
         init();
+
+        CacheDispatcher.getInstance().register(RemindCache.getInstance());
     }
 
     private void init() {
@@ -50,7 +53,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        ThreadUtil.shutDown();
+
+        CacheDispatcher.getInstance().clear();
     }
 
     @Override

@@ -6,16 +6,24 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.view.View;
+import android.widget.TextView;
 
 import com.sollian.ld.R;
+import com.sollian.ld.business.local.LocalManager;
+import com.sollian.ld.business.net.NetManager;
+import com.sollian.ld.models.User;
 import com.sollian.ld.utils.FileUtil;
 import com.sollian.ld.utils.LDUtil;
+import com.sollian.ld.utils.SharePrefUtil;
+import com.sollian.ld.utils.http.FileUploadAsyncTask;
 import com.sollian.ld.views.BaseActivity;
 import com.sollian.ld.views.titlebar.TitlebarHelper;
 
 import java.io.File;
 
+import customprogressview.ProgressDownloadView;
 import smartimageview.SmartImageView;
 
 /**
@@ -33,8 +41,13 @@ public class ObtainLogoActivity extends BaseActivity {
 
     private SmartImageView vImg;
 
+    private TextView tvRetry;
+    private ProgressDownloadView progressDownloadView;
+
     private File cameraFile;
     private File cutFile;
+
+    private boolean isUploading;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +57,15 @@ public class ObtainLogoActivity extends BaseActivity {
         checkData();
 
         init();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (isUploading) {
+            LDUtil.toast("请等待图片上传完毕");
+        } else {
+            super.onBackPressed();
+        }
     }
 
     private void checkData() {
@@ -66,6 +88,17 @@ public class ObtainLogoActivity extends BaseActivity {
         initTitle();
 
         vImg = (SmartImageView) findViewById(R.id.img);
+
+        progressDownloadView = (ProgressDownloadView) findViewById(R.id.progress);
+
+        tvRetry = (TextView) findViewById(R.id.tv_retry);
+        tvRetry.setVisibility(View.INVISIBLE);
+        tvRetry.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                uploadImg();
+            }
+        });
     }
 
     private void initTitle() {
@@ -130,19 +163,74 @@ public class ObtainLogoActivity extends BaseActivity {
                 case REQUEST_PICK_PHOTO:
                     //照片的原始资源地址
                     uri = data.getData();
+                    if (uri == null) {
+                        LDUtil.toast("图片获取失败");
+                        return;
+                    }
                     startPhotoZoom(uri);
                     break;
                 case REQUEST_TAKE_PHOTO:
+                    if (!cameraFile.exists()) {
+                        LDUtil.toast("图片保存失败");
+                        return;
+                    }
                     startPhotoZoom(Uri.fromFile(cameraFile));
                     break;
                 case REQUEST_ZOOM_PHOTO:
+                    if (!cutFile.exists()) {
+                        LDUtil.toast("图片保存失败");
+                        return;
+                    }
                     Bitmap bmp = BitmapFactory.decodeFile(cutFile.getAbsolutePath());
                     if (bmp != null) {
                         vImg.setImageBitmap(bmp);
                     }
+                    uploadImg();
                     break;
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void uploadImg() {
+        tvRetry.setVisibility(View.INVISIBLE);
+        User user = LocalManager.syncGetCurUser();
+        String url = NetManager.FILE_UPLOAD + user.getName();
+        FileUploadAsyncTask task = new FileUploadAsyncTask(this, url, new MyFileUploadListener());
+        task.execute(cutFile);
+    }
+
+    private class MyFileUploadListener implements FileUploadAsyncTask.FileUploadListener {
+
+        @Override
+        public void onStart() {
+            isUploading = true;
+        }
+
+        @Override
+        public void onProgress(int progress) {
+            progressDownloadView.setPercentage(progress);
+        }
+
+        @Override
+        public void onFinish(String msg) {
+            if (!TextUtils.isEmpty(msg) && msg.matches("\\d+")) {
+                progressDownloadView.drawSuccess();
+                LDUtil.toast("识别完毕您将收到通知");
+                new SharePrefUtil.RemindPref().addToRemindSet(msg);
+                progressDownloadView.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        isUploading = false;
+                        onBackPressed();
+                    }
+                }, 2000);
+            } else {
+                isUploading = false;
+                tvRetry.setVisibility(View.VISIBLE);
+                progressDownloadView.drawFail();
+                LDUtil.toast(msg);
+            }
+        }
     }
 }

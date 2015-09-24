@@ -25,6 +25,11 @@ class History
         $this->createTime = $createTime;
     }
 
+    function getInsertSql($table)
+    {
+        return "INSERT INTO " . $table . " (`img`) VALUE ('" . $this->img . "')";
+    }
+
     public static function getJsons($arr)
     {
         $historys = History::getHistorys($arr);

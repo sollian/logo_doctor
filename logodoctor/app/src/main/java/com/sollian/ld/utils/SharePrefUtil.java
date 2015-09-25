@@ -69,15 +69,18 @@ public class SharePrefUtil {
             sharePrefUtil = SharePrefUtil.getInstance();
         }
 
-        public Set<String> getRemindSet() {
-            String remind = sharePrefUtil.getString(KEY_REMIND_LIST);
-            return str2Set(remind);
+        public synchronized String getRemindIds() {
+            return sharePrefUtil.getString(KEY_REMIND_LIST);
+        }
+
+        public synchronized Set<String> getRemindSet() {
+            return str2Set(getRemindIds());
         }
 
         /**
          * 多个id用“,”分割
          */
-        public void addToRemindSet(String historyIds) {
+        public synchronized void addToRemindSet(String historyIds) {
             if (TextUtils.isEmpty(historyIds)) {
                 return;
             }
@@ -94,9 +97,9 @@ public class SharePrefUtil {
         /**
          * 多个id用“,”分割
          */
-        public void deleteFromRemindSet(String historyIds) {
+        public synchronized void deleteFromRemindSet(String historyIds) {
             Set<String> remindSet = getRemindSet();
-            if (remindSet == null || remindSet.isEmpty() || !remindSet.contains(historyIds)) {
+            if (remindSet == null || remindSet.isEmpty()) {
                 return;
             }
             remindSet.removeAll(str2Set(historyIds));
@@ -105,7 +108,7 @@ public class SharePrefUtil {
             CacheDispatcher.getInstance().dispatch(RemindCache.KEY_REMOVE_REMIND, historyIds);
         }
 
-        public void clearRemindSet() {
+        public synchronized void clearRemindSet() {
             sharePrefUtil.removeKey(KEY_REMIND_LIST);
             CacheDispatcher.getInstance().dispatch(RemindCache.KEY_CLEAR_REMIND, "");
         }

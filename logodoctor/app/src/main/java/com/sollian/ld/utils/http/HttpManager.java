@@ -355,7 +355,9 @@ public class HttpManager {
         private String mTag;
 
         public CustomHttp(Context context, HttpUriRequest http) {
-            mTag = context.getClass().getSimpleName();
+            if (context != null) {
+                mTag = context.getClass().getSimpleName();
+            }
             mHttp = http;
         }
 

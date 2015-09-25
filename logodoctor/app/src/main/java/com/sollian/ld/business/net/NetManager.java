@@ -40,7 +40,7 @@ public class NetManager {
     private static final String QUERY_HISTORY = BASE_PAGE_URL + "getHistory.php?minId=";
     private static final String SET_HISTORY_READ = BASE_PAGE_URL + "setHistoryRead.php?id=";
     public static final String FILE_UPLOAD = BASE_PAGE_URL + "uploadFile.php?user=";
-
+    private static final String QUERY_HISTORY_STATE = BASE_PAGE_URL + "queryHistoryState.php?ids=";
 
     public static void asyncLogin(@NonNull String name, @NonNull String pwd, final LDCallback callback) {
         AVUser.logInInBackground(name, pwd, new LogInCallback<AVUser>() {
@@ -108,6 +108,9 @@ public class NetManager {
     }
 
     public static void asyncQueryLogoById(final Activity activity, final String id, final LDCallback callback) {
+        if (TextUtils.isEmpty(id)) {
+            return;
+        }
         netQuery(activity, QUERY_LOGO_ID + id, new OnNetQueryDoneListener() {
             @Override
             public void onNetQueryDone(String data) {
@@ -127,6 +130,9 @@ public class NetManager {
     }
 
     public static void asyncQueryHistory(final Activity activity, final String minId, final LDCallback callback) {
+        if (TextUtils.isEmpty(minId)) {
+            return;
+        }
         netQuery(activity, QUERY_HISTORY + minId, new OnNetQueryDoneListener() {
             @Override
             public void onNetQueryDone(String data) {
@@ -152,6 +158,9 @@ public class NetManager {
      * 将History设置为已读，成功则返回受影响的个数
      */
     public static void asyncSetHistoryRead(final Activity activity, final String id, final LDCallback callback) {
+        if (TextUtils.isEmpty(id)) {
+            return;
+        }
         netQuery(activity, SET_HISTORY_READ + id, new OnNetQueryDoneListener() {
             @Override
             public void onNetQueryDone(String data) {
@@ -160,19 +169,54 @@ public class NetManager {
                     if (TextUtils.isEmpty(data)) {
                         netResponse.setErrorMsg(ERROR_NO_DATA);
                     }
-                    if (!data.matches("\\d+")) {
+                    if (data.matches("\\d+")) {
+                        netResponse.setObj(data);
+                    } else {
                         netResponse.setErrorMsg(data);
                     }
-                    netResponse.setObj(data);
                     callback.callback(netResponse);
                 }
             }
         });
-
     }
 
+    /**
+     * 多个id用","分割
+     * 调用成功，则返回处理好的history的id，否则返回错误信息
+     */
+    public static void asynQueryHistoryState(final Activity activity, final String historyIds, final LDCallback callback) {
+        if (TextUtils.isEmpty(historyIds)) {
+            return;
+        }
+        netQuery(activity, QUERY_HISTORY_STATE + historyIds, new OnNetQueryDoneListener() {
+            @Override
+            public void onNetQueryDone(String data) {
+                if (callback == null) {
+                    return;
+                }
+                LDResponse<String> netResponse = new LDResponse<>();
+                if (TextUtils.isEmpty(data)) {
+                    netResponse.setObj("");
+                } else {
+                    String temp = data.replaceAll(",", "");
+                    if (temp.matches("\\d+")) {
+                        netResponse.setObj(data);
+                    } else {
+                        netResponse.setErrorMsg(data);
+                    }
+                }
+                callback.callback(netResponse);
+            }
+        });
+    }
 
+    /**
+     * activity为null时，回调运行在异步线程；否则运行在主线程
+     */
     private static void netQuery(final Activity activity, final String url, final OnNetQueryDoneListener l) {
+        if (TextUtils.isEmpty(url)) {
+            return;
+        }
         ThreadUtil.execute(new Runnable() {
             @Override
             public void run() {
@@ -180,12 +224,16 @@ public class NetManager {
                 if (l == null) {
                     return;
                 }
-                activity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        l.onNetQueryDone(data);
-                    }
-                });
+                if (activity == null) {
+                    l.onNetQueryDone(data);
+                } else {
+                    activity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            l.onNetQueryDone(data);
+                        }
+                    });
+                }
             }
         });
     }

@@ -16,4 +16,7 @@
     <string name="result">识别结果：</string>
 
     <string name="obtain_photo">识别图片</string>
+
+    <string name="new_message">新消息</string>
+    <string name="msg_detail">您有%1$s条记录识别完毕</string>
 </resources>

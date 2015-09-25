@@ -2,7 +2,8 @@ package com.sollian.ld.utils.cache;
 
 import android.support.annotation.NonNull;
 
-import com.sollian.ld.utils.LogUtil;
+import com.sollian.ld.utils.poll.PollUtil;
+import com.sollian.ld.views.LDApplication;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -28,7 +29,6 @@ public class RemindCache implements ICache {
     }
 
     private RemindCache() {
-
     }
 
     @Override
@@ -45,13 +45,13 @@ public class RemindCache implements ICache {
     public void onCacheEvent(int key, @NonNull Object data) {
         switch (key) {
             case KEY_ADD_REMIND:
-                LogUtil.e(TAG, "add_remind---" + data.toString());
+                PollUtil.startPoll(LDApplication.getInstance());
                 break;
             case KEY_REMOVE_REMIND:
-                LogUtil.e(TAG, "remove_remind---" + data.toString());
+                PollUtil.stopPoll(LDApplication.getInstance());
                 break;
             case KEY_CLEAR_REMIND:
-                LogUtil.e(TAG, "clear_remind---" + data.toString());
+                PollUtil.stopPoll(LDApplication.getInstance());
                 break;
         }
     }

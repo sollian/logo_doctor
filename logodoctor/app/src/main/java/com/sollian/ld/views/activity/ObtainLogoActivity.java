@@ -188,8 +188,9 @@ public class ObtainLogoActivity extends BaseActivity {
                     uploadImg();
                     break;
             }
+        } else {
+            finish();
         }
-        super.onActivityResult(requestCode, resultCode, data);
     }
 
     private void uploadImg() {
@@ -224,7 +225,7 @@ public class ObtainLogoActivity extends BaseActivity {
                         isUploading = false;
                         onBackPressed();
                     }
-                }, 2000);
+                }, 2500);
             } else {
                 isUploading = false;
                 tvRetry.setVisibility(View.VISIBLE);

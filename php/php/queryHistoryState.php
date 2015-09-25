@@ -26,6 +26,40 @@ if (!isset($ids)) {
     $histories = History::getHistorys($arr);
     if ($histories) {
         foreach ($histories as $history) {
+            if (!$history->logoId) {
+                /**
+                 * 查看是否处理完毕
+                 */
+                $imgPath = $history->img;
+                $pathArr = explode(".", $imgPath);
+                $filePath = ".." . $pathArr[0] . ".txt";
+                if (is_file($filePath)) {
+                    /**
+                     * 处理完毕，更新数据库
+                     */
+                    $file = fopen($filePath, "r");
+                    if ($file) {
+                        $logoId = fgets($file);
+                        if ($logoId) {
+                            $sql = "UPDATE `" . TABLE_HISTORY . "` SET `logoId`=$logoId,`isProcessing`=0 WHERE `id`=$history->id";
+                            $mysql->query($sql);
+                            $affetctRows = $mysql->affectedrows();
+                            if ($affetctRows > 0) {
+                                $history->logoId = $logoId;
+                                $history->processing = 0;
+                            }
+                        }
+                    }
+                    fclose($file);
+                    /**
+                     * 删除文件
+                     */
+                    chmod($filePath, 511);
+                    unlink($filePath);
+                }
+            }
+
+
             if ($history->logoId) {
                 $count[] = $history->id;
             }

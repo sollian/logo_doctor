@@ -196,6 +196,10 @@ public class ObtainLogoActivity extends BaseActivity {
     private void uploadImg() {
         tvRetry.setVisibility(View.INVISIBLE);
         User user = LocalManager.syncGetCurUser();
+        if (user == null) {
+            LDUtil.toast("用户信息有误");
+            return;
+        }
         String url = NetManager.FILE_UPLOAD + user.getName();
         FileUploadAsyncTask task = new FileUploadAsyncTask(this, url, new MyFileUploadListener());
         task.execute(cutFile);

@@ -11,7 +11,6 @@ import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
 import org.apache.http.NoHttpResponseException;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpRequestRetryHandler;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
@@ -110,12 +109,9 @@ public class HttpManager {
         mConnSet.add(http);
         try {
             result = getHttpClient().execute(hg, getResponseHandler());
-        } catch (ClientProtocolException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
+            result = "连接错误".getBytes();
         } finally {
             mConnSet.remove(http);
         }
@@ -165,12 +161,9 @@ public class HttpManager {
             } else {
                 result = new String(data);
             }
-        } catch (ClientProtocolException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
+            result = "连接错误";
         } finally {
             mConnSet.remove(http);
         }

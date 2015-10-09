@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
+import com.sollian.ld.models.User;
 import com.sollian.ld.utils.cache.CacheDispatcher;
 import com.sollian.ld.utils.cache.RemindCache;
 import com.sollian.ld.views.LDApplication;
@@ -60,14 +61,40 @@ public class SharePrefUtil {
         editor.apply();
     }
 
-    public static class RemindPref {
-        private static final String KEY_REMIND_LIST = "remind_list";
+    public static abstract class AbsPref {
+        SharePrefUtil sharePrefUtil;
 
-        private SharePrefUtil sharePrefUtil;
-
-        public RemindPref() {
+        public AbsPref() {
             sharePrefUtil = SharePrefUtil.getInstance();
         }
+    }
+
+    public static class UserPref extends AbsPref {
+        private static final String KEY_USER_NAME = "user_name";
+        private static final String KEY_USER_PWD = "user_password";
+
+        public void setUser(User user) {
+            if (user == null) {
+                return;
+            }
+            sharePrefUtil.putString(KEY_USER_NAME, user.getName());
+            sharePrefUtil.putString(KEY_USER_PWD, user.getPassword());
+        }
+
+        public User getUser() {
+            String name = sharePrefUtil.getString(KEY_USER_NAME);
+            String pwd = sharePrefUtil.getString(KEY_USER_PWD);
+            if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(pwd)) {
+                return new User(name, pwd);
+            } else {
+                return null;
+            }
+        }
+    }
+
+    public static class RemindPref extends AbsPref {
+        private static final String KEY_REMIND_LIST = "remind_list";
+
 
         public synchronized String getRemindIds() {
             return sharePrefUtil.getString(KEY_REMIND_LIST);

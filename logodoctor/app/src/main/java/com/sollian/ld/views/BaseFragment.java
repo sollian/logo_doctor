@@ -80,13 +80,15 @@ public class BaseFragment extends Fragment {
             progressDialog.setCancelable(false);
             progressDialog.setCanceledOnTouchOutside(false);
         }
-        progressDialog.setMessage(message);
-        progressDialog.show();
+        if (!progressDialog.isShowing()) {
+            progressDialog.setMessage(message);
+            progressDialog.show();
+        }
     }
 
     public void hideProgressDialog() {
         if (progressDialog != null && progressDialog.isShowing()) {
-            progressDialog.hide();
+            progressDialog.dismiss();
         }
     }
 

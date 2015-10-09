@@ -2,7 +2,6 @@ package com.sollian.ld.views;
 
 import android.app.Application;
 
-import com.avos.avoscloud.AVOSCloud;
 import com.sollian.ld.utils.LDUtil;
 import com.sollian.ld.utils.poll.PollUtil;
 
@@ -25,7 +24,7 @@ public class LDApplication extends Application {
         /**
          * leancloud
          */
-        AVOSCloud.initialize(this, "l9I3JyCSfvbrQBy4X5Sdff6f", "0N6seNcJCdjpfgxlFNs9tXYP");
+//        AVOSCloud.initialize(this, "l9I3JyCSfvbrQBy4X5Sdff6f", "0N6seNcJCdjpfgxlFNs9tXYP");
 
         PollUtil.startPoll(this);
     }

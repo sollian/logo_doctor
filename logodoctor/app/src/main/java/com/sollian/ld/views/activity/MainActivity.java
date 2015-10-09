@@ -72,6 +72,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             intent = new Intent(this, HistoryActivity.class);
         }
         if (intent != null) {
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             IntentUtil.startActivity(this, intent);
         }
     }

@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
-import com.sollian.ld.views.BaseActivity;
 import com.sollian.ld.R;
 import com.sollian.ld.business.LDCallback;
 import com.sollian.ld.business.LDResponse;
@@ -79,8 +78,8 @@ public class SignUpFragment extends BaseLoginFragment implements View.OnClickLis
             vPwd2.setError(errorMessage);
             return;
         }
-        ((BaseActivity) getActivity()).showProgressDialog("正在登陆");
-        NetManager.asyncSignUp(name, pwd, new SignUpCallback());
+        showProgressDialog("正在登陆");
+        NetManager.asyncSignUp(getActivity(), name, pwd, new SignUpCallback());
     }
 
     @Override
@@ -94,7 +93,7 @@ public class SignUpFragment extends BaseLoginFragment implements View.OnClickLis
 
         @Override
         public void callback(@NonNull LDResponse response) {
-            ((BaseActivity) getActivity()).hideProgressDialog();
+            hideProgressDialog();
             if (response.success()) {
                 goMain();
             } else {

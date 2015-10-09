@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
+import com.sollian.ld.models.User;
+import com.sollian.ld.utils.SharePrefUtil;
 import com.sollian.ld.views.BaseActivity;
 import com.sollian.ld.R;
 import com.sollian.ld.business.LDCallback;
@@ -20,6 +22,9 @@ public class LoginFragment extends BaseLoginFragment implements View.OnClickList
 
     private EditText vName;
     private EditText vPwd;
+
+    private String name;
+    private String pwd;
 
     public LoginFragment(TitlebarHelper titlebarHelper, ChangeModeListener changeModeListener) {
         super(titlebarHelper, changeModeListener);
@@ -53,8 +58,8 @@ public class LoginFragment extends BaseLoginFragment implements View.OnClickList
     }
 
     private void login() {
-        String name = vName.getText().toString().trim();
-        String pwd = vPwd.getText().toString().trim();
+        name = vName.getText().toString().trim();
+        pwd = vPwd.getText().toString().trim();
         String errorMessage = checkNameValidity(name);
         if (errorMessage != null) {
             vName.setError(errorMessage);
@@ -65,16 +70,19 @@ public class LoginFragment extends BaseLoginFragment implements View.OnClickList
             vPwd.setError(errorMessage);
             return;
         }
-        ((BaseActivity) getActivity()).showProgressDialog("正在登陆");
-        NetManager.asyncLogin(name, pwd, new LoginCallback());
+        showProgressDialog("正在登陆");
+        NetManager.asyncLogin(getActivity(), name, pwd, new LoginCallback());
     }
 
     private class LoginCallback implements LDCallback {
 
         @Override
         public void callback(@NonNull LDResponse response) {
-            ((BaseActivity) getActivity()).hideProgressDialog();
+            hideProgressDialog();
             if (response.success()) {
+                User user = new User(name, pwd);
+                SharePrefUtil.UserPref userPref = new SharePrefUtil.UserPref();
+                userPref.setUser(user);
                 goMain();
             } else {
                 LDUtil.toast(response.getErrorMsg());

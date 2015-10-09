@@ -28,25 +28,10 @@ android {
 }
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile files('libs/fastjson.jar')
-    compile files('libs/android-async-http-1.4.8.jar')
     compile 'com.nineoldandroids:library:2.4.0'
     compile 'org.jsoup:jsoup:1.8.3'
-    //    compile 'org.apache:apache:17'
+    compile 'org.apache:apache:17'
     compile 'com.android.support:support-v4:23.0.1'
-    //    compile 'com.google.android.gms:play-services:7.8.0'
-    //avoscloud-sdk 为 LeanCloud基础包
-    compile 'cn.leancloud.android:avoscloud-sdk:v3.+'
-    //avoscloud-push 与 Java-WebSocket 为推送与IM需要的包
-    compile 'cn.leancloud.android:avoscloud-push:v3.+@aar'
-    compile 'cn.leancloud.android:Java-WebSocket:1.2.0-leancloud'
-    //avoscloud-statistics 为 LeanCloud 统计包
-    compile 'cn.leancloud.android:avoscloud-statistics:v3.+@aar'
-    //avoscloud-sns 为 LeanCloud 第三方登陆包cd oneinstack
-    compile 'cn.leancloud.android:avoscloud-sns:v3.+@aar'
-    compile 'cn.leancloud.android:qq-sdk:1.6.1-leancloud'
-    //avoscloud-feedback 为 LeanCloud 用户反馈包
-    //compile 'cn.leancloud.android:avoscloud-feedback:v3.+@aar'
     compile 'com.google.code.gson:gson:2.3.1'
 }
 

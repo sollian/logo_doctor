@@ -32,6 +32,9 @@ class History
 
     public static function getJsons($arr)
     {
+        if (!$arr) {
+            return null;
+        }
         $historys = History::getHistorys($arr);
         if ($historys) {
             return json_encode($historys, JSON_UNESCAPED_UNICODE);
@@ -42,6 +45,9 @@ class History
 
     public static function getJson($value)
     {
+        if (!$value) {
+            return null;
+        }
         $history = History::getHistory($value);
         if ($history) {
             return json_encode($history, JSON_UNESCAPED_UNICODE);
@@ -52,6 +58,9 @@ class History
 
     public static function getHistorys($arr)
     {
+        if (!$arr) {
+            return null;
+        }
         foreach ($arr as $value) {
             $historys[] = History::getHistory($value);
         }
@@ -65,7 +74,7 @@ class History
     public static function getHistory($value)
     {
         if ($value) {
-            return new History($value["id"], $value["logoId"], $value["img"], $value["isRead"],
+            return @new History($value["id"], $value["logoId"], $value["img"], $value["isRead"],
                 $value["isProcessing"], $value["createTime"]);
         } else {
             return null;

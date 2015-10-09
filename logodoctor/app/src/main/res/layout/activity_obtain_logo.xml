@@ -29,7 +29,7 @@
         android:layout_marginTop="50dp"
         android:padding="10dp"
         android:textSize="@dimen/text_large"
-        tools:text="重试"
+        android:text="重试"
         />
 
     <LinearLayout

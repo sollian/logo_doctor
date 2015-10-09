@@ -48,6 +48,7 @@ public class PollRemindService extends Service {
                         remindPref.deleteFromRemindSet(historyIds);
                         String[] arr = historyIds.split(",");
                         Intent intent = new Intent(PollRemindService.this, HistoryActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         NotifyUtil.showNotify(PollRemindService.this, intent,
                             getString(R.string.new_message), getString(R.string.msg_detail, arr.length));
                     }

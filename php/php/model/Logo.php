@@ -27,6 +27,9 @@ class Logo
 
     public static function getJsons($arr)
     {
+        if (!$arr) {
+            return null;
+        }
         $logos = Logo::getLogos($arr);
         if ($logos) {
             return json_encode($logos, JSON_UNESCAPED_UNICODE);
@@ -37,6 +40,9 @@ class Logo
 
     public static function getJson($value)
     {
+        if (!$value) {
+            return null;
+        }
         $logo = Logo::getLogo($value);
         if ($logo) {
             return json_encode($logo, JSON_UNESCAPED_UNICODE);
@@ -47,6 +53,9 @@ class Logo
 
     public static function getLogos($arr)
     {
+        if (!$arr) {
+            return null;
+        }
         foreach ($arr as $value) {
             $logos[] = Logo::getLogo($value);
         }
@@ -60,7 +69,7 @@ class Logo
     public static function getLogo($value)
     {
         if ($value) {
-            return new Logo($value["id"], $value["name"], $value["img"], $value["extra"],
+            return @new Logo($value["id"], $value["name"], $value["img"], $value["extra"],
                 $value["description"], $value["category"]);
         } else {
             return null;

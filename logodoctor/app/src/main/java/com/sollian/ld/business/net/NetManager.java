@@ -4,17 +4,12 @@ import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
-import com.avos.avoscloud.AVException;
-import com.avos.avoscloud.AVUser;
-import com.avos.avoscloud.LogInCallback;
-import com.avos.avoscloud.SignUpCallback;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.sollian.ld.business.LDCallback;
 import com.sollian.ld.business.LDResponse;
 import com.sollian.ld.models.History;
 import com.sollian.ld.models.Logo;
-import com.sollian.ld.models.User;
 import com.sollian.ld.utils.ThreadUtil;
 import com.sollian.ld.utils.http.HttpManager;
 
@@ -33,8 +28,12 @@ public class NetManager {
     /**
      * 服务器地址
      */
-    public static final String BASE_URL = "http://121.42.150.146/logodoctor";
+//    public static final String BASE_URL = "http://192.168.1.203/logodoctor";
+    public static final String BASE_URL = "http://182.254.157.222/logodoctor";
+//    public static final String BASE_URL = "http://121.42.150.146/logodoctor";
     private static final String BASE_PAGE_URL = BASE_URL + "/php/";
+    private static final String SIGN_UP = BASE_PAGE_URL + "register.php";
+    private static final String LOGIN = BASE_PAGE_URL + "login.php";
     private static final String QUERY_LOGO_ALL = BASE_PAGE_URL + "getLogo.php";
     private static final String QUERY_LOGO_ID = BASE_PAGE_URL + "getLogo.php?id=";
     private static final String QUERY_HISTORY = BASE_PAGE_URL + "getHistory.php?minId=";
@@ -42,42 +41,30 @@ public class NetManager {
     public static final String FILE_UPLOAD = BASE_PAGE_URL + "uploadFile.php?user=";
     private static final String QUERY_HISTORY_STATE = BASE_PAGE_URL + "queryHistoryState.php?ids=";
 
-    public static void asyncLogin(@NonNull String name, @NonNull String pwd, final LDCallback callback) {
-        AVUser.logInInBackground(name, pwd, new LogInCallback<AVUser>() {
+    public static void asyncLogin(final Activity activity, @NonNull String name, @NonNull String pwd, final LDCallback callback) {
+        netQuery(activity, LOGIN + "?name=" + name + "&password=" + pwd, new OnNetQueryDoneListener() {
             @Override
-            public void done(AVUser avUser, AVException e) {
+            public void onNetQueryDone(String data) {
                 if (callback != null) {
-                    LDResponse<User> netResponse = new LDResponse<>();
-                    if (avUser != null) {
-                        User user = new User();
-                        user.setName(avUser.getUsername());
-                        netResponse.setObj(user);
-                    } else if (e != null) {
-                        netResponse.setErrorMsg(e.getMessage());
-                    } else {
-                        netResponse.setErrorMsg(ERROR_DEFAULT);
-                    }
+                    LDResponse<String> netResponse = new LDResponse<>();
+                    netResponse.setErrorMsg(data);
                     callback.callback(netResponse);
                 }
             }
         });
     }
 
-    public static void asyncSignUp(@NonNull final String name, @NonNull String pwd, final LDCallback callback) {
-        AVUser user = new AVUser();
-        user.setPassword(pwd);
-        user.setUsername(name);
-        user.signUpInBackground(new SignUpCallback() {
+    public static void asyncSignUp(final Activity activity, @NonNull final String name, @NonNull String pwd, final LDCallback callback) {
+        netQuery(activity, SIGN_UP + "?name=" + name + "&password=" + pwd, new OnNetQueryDoneListener() {
             @Override
-            public void done(AVException e) {
+            public void onNetQueryDone(String data) {
                 if (callback != null) {
-                    LDResponse<User> netResponse = new LDResponse<>();
-                    if (e == null) {
-                        User user = new User();
-                        user.setName(name);
-                        netResponse.setObj(user);
-                    } else {
-                        netResponse.setErrorMsg(e.getMessage());
+                    LDResponse<String> netResponse = new LDResponse<>();
+                    netResponse.setErrorMsg(data);
+                    if (!TextUtils.isEmpty(data) && data.matches("\\d+")) {
+                        if (Integer.parseInt(data) >= 1) {
+                            netResponse.setErrorMsg(null);
+                        }
                     }
                     callback.callback(netResponse);
                 }

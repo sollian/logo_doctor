@@ -7,3 +7,4 @@
  */
 define("TABLE_LOGO", "logo");
 define("TABLE_HISTORY", "history");
+define("TABLE_USER", "user");

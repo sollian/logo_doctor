@@ -8,7 +8,7 @@
  */
 define("SERVER", "localhost");
 define("USER", "root");
-define("PASSWORD", "123456");
+define("PASSWORD", "root");
 define("DATABASE", "logodoctor");
 define("CHARSET", "utf8");
 
@@ -58,7 +58,11 @@ class mysql
             $arr[] = $row;
         }
         mysql_free_result($result);
-        return $arr;
+        if (isset($arr)) {
+            return $arr;
+        } else {
+            return null;
+        }
     }
 
     function numrows($result)
@@ -96,32 +100,25 @@ class mysql
         if ($querytype == 'select') {
             $notallow1 = "[^0-9a-z@._-]{1,}(union|sleep|benchmark|load_file|outfile)[^0-9a-z@.-]{1,}";
             //$notallow2 = "--|
-            function close()
-            {
-                mysql_close($this->link);
-            }
-
-            function error($err_msg = "")
-            {
-                if ($err_msg == "") {
-                    echo "errno:" . mysql_errno . "</br>";
-                    echo "error:" . mysql_error . "</br>";
-                } else {
-                    echo $err_msg;
-                }
-            }
-
-            function __destruct()
-            {
-                $this->close();
-            }
         }
     }
 
-//数据库连接函数
-    function conn_db()
+    function close()
     {
-        $link_db = new mysql(web_server, web_user, web_pwd, web_db, "utf8");
-        return $link_db;
+        mysql_close($this->link);
+    }
+
+    function error($err_msg = "")
+    {
+        if ($err_msg == "") {
+        } else {
+            echo $err_msg;
+        }
+        return null;
+    }
+
+    function __destruct()
+    {
+        $this->close();
     }
 }

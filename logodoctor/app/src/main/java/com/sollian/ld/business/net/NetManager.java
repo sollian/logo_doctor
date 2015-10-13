@@ -8,6 +8,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.sollian.ld.business.LDCallback;
 import com.sollian.ld.business.LDResponse;
+import com.sollian.ld.business.db.LogoDB;
 import com.sollian.ld.models.History;
 import com.sollian.ld.models.Logo;
 import com.sollian.ld.utils.ThreadUtil;
@@ -28,8 +29,8 @@ public class NetManager {
     /**
      * 服务器地址
      */
-//    public static final String BASE_URL = "http://192.168.1.203/logodoctor";
-    public static final String BASE_URL = "http://182.254.157.222/logodoctor";
+    public static final String BASE_URL = "http://192.168.1.203/logodoctor";
+    //    public static final String BASE_URL = "http://182.254.157.222/logodoctor";
 //    public static final String BASE_URL = "http://121.42.150.146/logodoctor";
     private static final String BASE_PAGE_URL = BASE_URL + "/php/";
     private static final String SIGN_UP = BASE_PAGE_URL + "register.php";
@@ -86,6 +87,9 @@ public class NetManager {
                         Gson gson = new Gson();
                         ArrayList<Logo> logos = gson.fromJson(data, listType);
                         netResponse.setObj(logos);
+                        //本地存储
+                        LogoDB logoDB = new LogoDB();
+                        logoDB.asyncInsertOrUpdate(logos);
                     }
                     callback.callback(netResponse);
                 }

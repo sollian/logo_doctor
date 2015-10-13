@@ -8,43 +8,36 @@ import android.util.Log;
  */
 public class LogUtil {
     public static final String TAG_LIFE_CYCLE = "life_cycle";
+    public static final String TAG_TEST = "test";
 
     private static boolean isLoggable(String tag, int level) {
         return Log.isLoggable(tag, level);
     }
 
     public static void v(String tag, String info) {
-        if (isLoggable(tag, Log.VERBOSE)) {
-            Log.v(tag, info);
-        }
+        Log.v(tag, info);
     }
 
     public static void i(String tag, String info) {
-        if (isLoggable(tag, Log.INFO)) {
-            Log.i(tag, info);
-        }
+        Log.i(tag, info);
     }
 
     public static void d(String tag, String info) {
-        if (isLoggable(tag, Log.DEBUG)) {
-            Log.d(tag, info);
-        }
+        Log.d(tag, info);
     }
 
     public static void w(String tag, String info) {
-        if (isLoggable(tag, Log.WARN)) {
-            Log.w(tag, info);
-        }
+        Log.w(tag, info);
     }
 
     public static void e(String tag, String info) {
-        if (isLoggable(tag, Log.ERROR)) {
-            Log.e(tag, info);
-        }
+        Log.e(tag, info);
     }
 
     public static void lifeCycle(String info) {
-        d(TAG_LIFE_CYCLE, info);
+        if (isLoggable(TAG_LIFE_CYCLE, Log.DEBUG)) {
+            Log.d(TAG_LIFE_CYCLE, info);
+        }
     }
 
 }

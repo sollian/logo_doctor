@@ -6,10 +6,16 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.sollian.ld.R;
+import com.sollian.ld.business.db.LogoDB;
+import com.sollian.ld.models.Logo;
 import com.sollian.ld.utils.IntentUtil;
 import com.sollian.ld.utils.cache.CacheDispatcher;
 import com.sollian.ld.utils.cache.RemindCache;
 import com.sollian.ld.views.BaseActivity;
+import com.sollian.ld.views.fragment.LogoDetailFragment;
+import com.sollian.ld.views.otherview.LogoFlyView;
+
+import java.util.List;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener {
 
@@ -17,6 +23,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private TextView tvViewPic;
     private TextView tvLookAround;
     private TextView tvHistory;
+    private LogoFlyView flyView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,12 +55,38 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         tvHistory = (TextView) vHistory.findViewById(R.id.block_title);
         tvHistory.setText(R.string.history);
         tvHistory.setOnClickListener(this);
+
+        flyView = (LogoFlyView) findViewById(R.id.flyView);
+        List<Logo> logos = new LogoDB().queryAll();
+        if (logos != null && !logos.isEmpty()) {
+            flyView.setLogoClickListener(new LogoClickListener());
+            flyView.setVisibility(View.VISIBLE);
+            flyView.setLogos(logos);
+        } else {
+            flyView.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (flyView.getVisibility() == View.VISIBLE) {
+            flyView.resume();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (flyView.getVisibility() == View.VISIBLE) {
+            flyView.pause();
+        }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
+        flyView.cancel();
         CacheDispatcher.getInstance().clear();
     }
 
@@ -74,6 +107,19 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         if (intent != null) {
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             IntentUtil.startActivity(this, intent);
+        }
+    }
+
+    private class LogoClickListener implements View.OnClickListener {
+
+        @Override
+        public void onClick(View v) {
+            Logo logo = (Logo) v.getTag();
+            if (logo != null) {
+                Intent intent = new Intent(MainActivity.this, LogoDetailActivity.class);
+                intent.putExtra(LogoDetailFragment.KEY_ID, logo.getId());
+                IntentUtil.startActivity(MainActivity.this, intent);
+            }
         }
     }
 }

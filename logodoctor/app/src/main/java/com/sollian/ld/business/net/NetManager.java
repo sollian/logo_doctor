@@ -9,6 +9,7 @@ import com.google.gson.reflect.TypeToken;
 import com.sollian.ld.business.LDCallback;
 import com.sollian.ld.business.LDResponse;
 import com.sollian.ld.business.db.LogoDB;
+import com.sollian.ld.business.local.LocalManager;
 import com.sollian.ld.models.History;
 import com.sollian.ld.models.Logo;
 import com.sollian.ld.utils.ThreadUtil;
@@ -29,8 +30,8 @@ public class NetManager {
     /**
      * 服务器地址
      */
-    public static final String BASE_URL = "http://192.168.1.203/logodoctor";
-    //    public static final String BASE_URL = "http://182.254.157.222/logodoctor";
+//    public static final String BASE_URL = "http://192.168.1.203/logodoctor";
+        public static final String BASE_URL = "http://182.254.157.222:8080/logodoctor";
 //    public static final String BASE_URL = "http://121.42.150.146/logodoctor";
     private static final String BASE_PAGE_URL = BASE_URL + "/php/";
     private static final String SIGN_UP = BASE_PAGE_URL + "register.php";
@@ -124,7 +125,7 @@ public class NetManager {
         if (TextUtils.isEmpty(minId)) {
             return;
         }
-        netQuery(activity, QUERY_HISTORY + minId, new OnNetQueryDoneListener() {
+        netQuery(activity, QUERY_HISTORY + minId + "&user=" + LocalManager.syncGetCurUser().getName(), new OnNetQueryDoneListener() {
             @Override
             public void onNetQueryDone(String data) {
                 if (callback != null) {

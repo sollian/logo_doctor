@@ -9,6 +9,7 @@ import com.sollian.ld.business.net.NetManager;
  */
 public class History implements IWrapImg {
     private String id;
+    private String userName;
     private String img;
     private String logoId;
     /**
@@ -27,6 +28,14 @@ public class History implements IWrapImg {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getImg() {

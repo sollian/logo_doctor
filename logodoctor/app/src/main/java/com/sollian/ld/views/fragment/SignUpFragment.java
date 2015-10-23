@@ -14,8 +14,10 @@ import com.sollian.ld.R;
 import com.sollian.ld.business.LDCallback;
 import com.sollian.ld.business.LDResponse;
 import com.sollian.ld.business.net.NetManager;
+import com.sollian.ld.models.User;
 import com.sollian.ld.utils.IntentUtil;
 import com.sollian.ld.utils.LDUtil;
+import com.sollian.ld.utils.SharePrefUtil;
 import com.sollian.ld.views.titlebar.TitlebarHelper;
 
 public class SignUpFragment extends BaseLoginFragment implements View.OnClickListener {
@@ -95,6 +97,9 @@ public class SignUpFragment extends BaseLoginFragment implements View.OnClickLis
         public void callback(@NonNull LDResponse response) {
             hideProgressDialog();
             if (response.success()) {
+                User user = new User(name, pwd);
+                SharePrefUtil.UserPref userPref = new SharePrefUtil.UserPref();
+                userPref.setUser(user);
                 goMain();
             } else {
                 LDUtil.toast(response.getErrorMsg());

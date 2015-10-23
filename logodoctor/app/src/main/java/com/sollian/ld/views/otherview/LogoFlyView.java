@@ -3,11 +3,13 @@ package com.sollian.ld.views.otherview;
 import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.os.Handler;
+import android.support.v7.graphics.Palette;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
@@ -38,6 +40,8 @@ public class LogoFlyView extends ViewGroup {
     private static final int NULL_DURATION = 5000;
     private static final int MERGE_DURATION = 1500;
 
+    private static final int DEFAULT_LINE_COLOR = Color.WHITE;
+
     private int maxImgPerFrame = 6;
 
     private float centerX, centerY;
@@ -51,6 +55,7 @@ public class LogoFlyView extends ViewGroup {
     private OnClickListener listener;
 
     private Paint paint;
+    private List<Integer> lineColors;
 
     private FlyState flyState;
 
@@ -103,6 +108,7 @@ public class LogoFlyView extends ViewGroup {
     private void initList() {
         vImgs = new ArrayList<>();
         pointFs = new ArrayList<>();
+        lineColors = new ArrayList<>();
         removeAllViews();
         for (int i = 0; i < maxImgPerFrame; i++) {
             SmartImageView v = new SmartImageView(getContext());
@@ -115,6 +121,7 @@ public class LogoFlyView extends ViewGroup {
             addView(v);
 
             pointFs.add(new PointF());
+            lineColors.add(DEFAULT_LINE_COLOR);
         }
     }
 
@@ -134,14 +141,7 @@ public class LogoFlyView extends ViewGroup {
             return;
         }
         for (int i = 0; i < vImgs.size(); i++) {
-            SmartImageView v = vImgs.get(i);
-            Logo logo = logos.get((curLogoIndex + i) % logos.size());
-            if (!TextUtils.isEmpty(logo.getWrappedImg())) {
-                v.setImageUrl(logo.getWrappedImg(), R.drawable.ic_launcher, R.drawable.ic_launcher);
-            } else {
-                v.setImageResource(R.drawable.ic_launcher);
-            }
-            v.setTag(logo);
+            View v = vImgs.get(i);
 
             PointF pointF = pointFs.get(i);
             int left = (int) (pointF.x - imgSize / 2f);
@@ -168,8 +168,9 @@ public class LogoFlyView extends ViewGroup {
         if (pointFs == null || pointFs.isEmpty()) {
             return;
         }
-        for (PointF pointf : pointFs) {
-            canvas.drawLine(centerX, centerY, pointf.x, pointf.y, paint);
+        for (int i = 0; i < pointFs.size(); i++) {
+            paint.setColor(lineColors.get(i));
+            canvas.drawLine(centerX, centerY, pointFs.get(i).x, pointFs.get(i).y, paint);
         }
     }
 
@@ -243,6 +244,19 @@ public class LogoFlyView extends ViewGroup {
             animator.addListener(new Animator.AnimatorListener() {
                 @Override
                 public void onAnimationStart(Animator animation) {
+                    for (int i = 0; i < vImgs.size(); i++) {
+                        SmartImageView v = vImgs.get(i);
+                        Logo logo = logos.get((curLogoIndex + i) % logos.size());
+                        if (!TextUtils.isEmpty(logo.getWrappedImg())) {
+                            v.setImageUrl(logo.getWrappedImg(), R.drawable.ic_launcher, R.drawable.ic_launcher);
+                        } else {
+                            v.setImageResource(R.drawable.ic_launcher);
+                        }
+                        v.setTag(logo);
+                        if (v.getOnLoadedListener() == null) {
+                            v.setOnLoadedListener(new ImageLoadedListener(i));
+                        }
+                    }
                 }
 
                 @Override
@@ -316,6 +330,39 @@ public class LogoFlyView extends ViewGroup {
                 }
             });
             animator.reverse();
+        }
+    }
+
+    private class ImageLoadedListener implements SmartImageView.OnLoadedListener {
+        public int index;
+
+        public ImageLoadedListener(int index) {
+            this.index = index;
+        }
+
+        @Override
+        public void onLoadSuccess(Bitmap bitmap) {
+            new Palette.Builder(bitmap).generate(new Palette.PaletteAsyncListener() {
+                @Override
+                public void onGenerated(Palette palette) {
+                    Palette.Swatch swatch = palette.getVibrantSwatch();
+                    if (swatch == null) {
+                        swatch = palette.getMutedSwatch();
+                    }
+                    lineColors.remove(index);
+                    if (null != swatch) {
+                        lineColors.add(index, swatch.getRgb());
+                    } else {
+                        lineColors.add(index, DEFAULT_LINE_COLOR);
+                    }
+                }
+            });
+        }
+
+        @Override
+        public void onLoadFailed() {
+            lineColors.remove(index);
+            lineColors.add(index, DEFAULT_LINE_COLOR);
         }
     }
 

@@ -8,6 +8,7 @@
 include_once "utils/Tables.php";
 include_once "utils/MySql.php";
 include_once "model/History.php";
+include_once "model/Logo.php";
 
 define("QUERY_STATE", "SELECT * FROM " . TABLE_HISTORY . " WHERE `id` IN");
 
@@ -31,22 +32,29 @@ if (!isset($ids)) {
                  * 查看是否处理完毕
                  */
                 $imgPath = $history->img;
-                $pathArr = explode(".", $imgPath);
-                $filePath = ".." . $pathArr[0] . ".txt";
+                $filePath = ".." . $imgPath . ".txt";
                 if (is_file($filePath)) {
                     /**
                      * 处理完毕，更新数据库
                      */
                     $file = fopen($filePath, "r");
                     if ($file) {
-                        $logoId = fgets($file);
-                        if ($logoId) {
-                            $sql = "UPDATE `" . TABLE_HISTORY . "` SET `logoId`=$logoId,`isProcessing`=0 WHERE `id`=$history->id";
-                            $mysql->query($sql);
-                            $affetctRows = $mysql->affectedrows();
-                            if ($affetctRows > 0) {
-                                $history->logoId = $logoId;
-                                $history->processing = 0;
+                        $logoName = fgets($file);
+                        if ($logoName) {
+                            $logoName = trim(substr($logoName, 2));
+                            //根据logoName获取logoId
+                            $sql = "select * from " . TABLE_LOGO . " where `img`='$logoName'";
+                            $result = $mysql->query($sql);
+                            $value = $mysql->fetcharray($result);
+                            $logo = Logo::getLogo($value);
+                            if ($logo) {
+                                $sql = "UPDATE `" . TABLE_HISTORY . "` SET `logoId`=$logo->id,`isProcessing`=0 WHERE `id`=$history->id";
+                                $mysql->query($sql);
+                                $affetctRows = $mysql->affectedrows();
+                                if ($affetctRows > 0) {
+                                    $history->logoId = $logoName;
+                                    $history->processing = 0;
+                                }
                             }
                         }
                     }
@@ -55,7 +63,7 @@ if (!isset($ids)) {
                      * 删除文件
                      */
                     chmod($filePath, 511);
-                    unlink($filePath);
+//                    unlink($filePath);
                 }
             }
 

@@ -7,9 +7,9 @@ import android.widget.ImageView;
 
 import com.sollian.ld.utils.ThreadUtil;
 
-import smartimageview.SmartImageTask.OnCompleteListener;
-
 import java.util.Map;
+
+import smartimageview.SmartImageTask.OnCompleteListener;
 
 public class SmartImageView extends ImageView {
     private static WebImageCache webImageCache;
@@ -105,6 +105,9 @@ public class SmartImageView extends ImageView {
             Bitmap bmp = getBmpFromLocale(image.getUrl());
             if (bmp != null) {
                 setImageBitmap(bmp);
+                if (onLoadedListener != null) {
+                    onLoadedListener.onLoadSuccess(bmp);
+                }
                 return;
             }
         }
@@ -122,10 +125,16 @@ public class SmartImageView extends ImageView {
             public void onComplete(Bitmap bitmap) {
                 if (bitmap != null) {
                     setImageBitmap(bitmap);
+                    if (onLoadedListener != null) {
+                        onLoadedListener.onLoadSuccess(bitmap);
+                    }
                 } else {
                     // Set fallback resource
                     if (fallbackResource != null) {
                         setImageResource(fallbackResource);
+                    }
+                    if (onLoadedListener != null) {
+                        onLoadedListener.onLoadFailed();
                     }
                 }
                 if (completeListener != null) {
@@ -143,6 +152,22 @@ public class SmartImageView extends ImageView {
             webImageCache = new WebImageCache(getContext());
         }
         return webImageCache.get(url);
+    }
+
+    private OnLoadedListener onLoadedListener;
+
+    public void setOnLoadedListener(OnLoadedListener loadedListener) {
+        this.onLoadedListener = loadedListener;
+    }
+
+    public OnLoadedListener getOnLoadedListener() {
+        return onLoadedListener;
+    }
+
+    public interface OnLoadedListener {
+        void onLoadSuccess(Bitmap bitmap);
+
+        void onLoadFailed();
     }
 
 }

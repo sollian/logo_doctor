@@ -49,5 +49,11 @@ if (!isset($user)) {
         $value = $mysql->fetcharray($result);
         $history = History::getHistory($value);
         echo $history->id;
+        /**
+         * 开启匹配程序
+         */
+        $fp = fsockopen("localhost", 80);
+        fputs($fp, "GET /logodoctor/php/processCore.php?path=$target_path\r\n\r\n");
+        fclose($fp);
     }
 }

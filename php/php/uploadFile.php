@@ -34,11 +34,11 @@ if (!isset($user)) {
         echo "服务器保存文件失败";
     } else {
         chmod($target_path, 511);
-        $history = new History(null, null, $img_path, null, null, null);
+        $history = new History(null, $user, null, $img_path, null, null, null);
         /**
          * 插入
          */
-        $sql = $history->getInsertSql(TABLE_HISTORY);
+        $sql = $history->getInsertSql(TABLE_HISTORY, $user);
         $mysql = new MySql();
         $mysql->query($sql);
         /**

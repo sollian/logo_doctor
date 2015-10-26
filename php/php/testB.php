@@ -16,7 +16,7 @@ if(isset($user)) {
 } else {
     $content = "no user";
 }
-system("testout.exe");
+system("test.exe");
 //$fp = fopen("test.txt", "w");
 //fwrite($fp, $content);
 //fclose($fp);

@@ -47,14 +47,16 @@ if (!isset($ids)) {
                             $result = $mysql->query($sql);
                             $value = $mysql->fetcharray($result);
                             $logo = Logo::getLogo($value);
-                            if ($logo) {
-                                $sql = "UPDATE `" . TABLE_HISTORY . "` SET `logoId`=$logo->id,`isProcessing`=0 WHERE `id`=$history->id";
-                                $mysql->query($sql);
-                                $affetctRows = $mysql->affectedrows();
-                                if ($affetctRows > 0) {
-                                    $history->logoId = $logoName;
-                                    $history->processing = 0;
-                                }
+                        } else {
+                            $logo = new Logo(-1, null, null, null, null, null);
+                        }
+                        if ($logo) {
+                            $sql = "UPDATE `" . TABLE_HISTORY . "` SET `logoId`=$logo->id,`isProcessing`=0 WHERE `id`=$history->id";
+                            $mysql->query($sql);
+                            $affetctRows = $mysql->affectedrows();
+                            if ($affetctRows > 0) {
+                                $history->logoId = $logo->id;
+                                $history->processing = 0;
                             }
                         }
                     }

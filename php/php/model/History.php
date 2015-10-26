@@ -9,15 +9,17 @@
 class History
 {
     public $id;
+    public $userName;
     public $logoId;
     public $img;
     public $read;
     public $processing;
     public $createTime;
 
-    function __construct($id, $logoId, $img, $read, $processing, $createTime)
+    function __construct($id, $userName, $logoId, $img, $read, $processing, $createTime)
     {
         $this->id = $id;
+        $this->userName = $userName;
         $this->logoId = $logoId;
         $this->img = $img;
         $this->read = $read;
@@ -27,7 +29,7 @@ class History
 
     function getInsertSql($table)
     {
-        return "INSERT INTO " . $table . " (`img`) VALUE ('" . $this->img . "')";
+        return "INSERT INTO " . $table . " (`userName`,`img`) VALUE ('" . $this->userName . "','" . $this->img . "')";
     }
 
     public static function getJsons($arr)
@@ -74,7 +76,7 @@ class History
     public static function getHistory($value)
     {
         if ($value) {
-            return @new History($value["id"], $value["logoId"], $value["img"], $value["isRead"],
+            return @new History($value["id"], $value["userName"], $value["logoId"], $value["img"], $value["isRead"],
                 $value["isProcessing"], $value["createTime"]);
         } else {
             return null;

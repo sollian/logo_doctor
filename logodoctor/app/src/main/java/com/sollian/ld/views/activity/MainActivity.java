@@ -57,11 +57,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         tvHistory.setOnClickListener(this);
 
         flyView = (LogoFlyView) findViewById(R.id.flyView);
+        initFlyView();
+    }
+
+    private void initFlyView() {
         List<Logo> logos = new LogoDB().queryAll();
         if (logos != null && !logos.isEmpty()) {
             flyView.setLogoClickListener(new LogoClickListener());
-            flyView.setVisibility(View.VISIBLE);
             flyView.setLogos(logos);
+            flyView.setVisibility(View.VISIBLE);
         } else {
             flyView.setVisibility(View.GONE);
         }

@@ -80,10 +80,10 @@ public class PollRemindService extends Service {
     private void queryRemind() {
         String historyIds = remindPref.getRemindIds();
         LogUtil.e(TAG, "1----" + historyIds);
-        if (TextUtils.isEmpty(historyIds)) {
+        if (TextUtils.isEmpty(historyIds) || !remindPref.isRemindQueryValid()) {
             PollUtil.stopPoll(LDApplication.getInstance());
         } else {
-            NetManager.asynQueryHistoryState(null, historyIds, new QueryRemindCallback());
+            NetManager.asyncQueryHistoryState(null, historyIds, new QueryRemindCallback());
         }
     }
 

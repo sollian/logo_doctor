@@ -36,6 +36,22 @@ public class SharePrefUtil {
         sp = context.getSharedPreferences(LD_PREF, Activity.MODE_PRIVATE);
     }
 
+    public void putInt(String key, int value) {
+        if (TextUtils.isEmpty(key)) {
+            return;
+        }
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putInt(key, value);
+        editor.apply();
+    }
+
+    public int getInt(String key) {
+        if (TextUtils.isEmpty(key)) {
+            return 0;
+        }
+        return sp.getInt(key, 0);
+    }
+
     public void putString(String key, String value) {
         if (TextUtils.isEmpty(key)) {
             return;
@@ -94,7 +110,19 @@ public class SharePrefUtil {
 
     public static class RemindPref extends AbsPref {
         private static final String KEY_REMIND_LIST = "remind_list";
+        private static final String KEY_REMIND_QUERY_COUNT = "remind_query_count";
 
+        private static final int MAX_QUERY_COUNT = 5;
+
+        public boolean isRemindQueryValid() {
+            int queryCount = sharePrefUtil.getInt(KEY_REMIND_QUERY_COUNT);
+            sharePrefUtil.putInt(KEY_REMIND_QUERY_COUNT, queryCount + 1);
+            return queryCount < MAX_QUERY_COUNT;
+        }
+
+        public void setRemindQueryValid() {
+            sharePrefUtil.putInt(KEY_REMIND_QUERY_COUNT, 0);
+        }
 
         public synchronized String getRemindIds() {
             return sharePrefUtil.getString(KEY_REMIND_LIST);
@@ -118,6 +146,8 @@ public class SharePrefUtil {
                 sharePrefUtil.putString(KEY_REMIND_LIST, remind + "," + historyIds);
             }
 
+            setRemindQueryValid();
+
             CacheDispatcher.getInstance().dispatch(RemindCache.KEY_ADD_REMIND, historyIds);
         }
 
@@ -132,11 +162,16 @@ public class SharePrefUtil {
             remindSet.removeAll(str2Set(historyIds));
             sharePrefUtil.putString(KEY_REMIND_LIST, set2Str(remindSet));
 
+            setRemindQueryValid();
+
             CacheDispatcher.getInstance().dispatch(RemindCache.KEY_REMOVE_REMIND, historyIds);
         }
 
         public synchronized void clearRemindSet() {
             sharePrefUtil.removeKey(KEY_REMIND_LIST);
+
+            setRemindQueryValid();
+
             CacheDispatcher.getInstance().dispatch(RemindCache.KEY_CLEAR_REMIND, "");
         }
 

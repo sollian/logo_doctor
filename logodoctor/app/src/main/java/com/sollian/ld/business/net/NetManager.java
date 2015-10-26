@@ -30,8 +30,8 @@ public class NetManager {
     /**
      * 服务器地址
      */
-//    public static final String BASE_URL = "http://192.168.1.203/logodoctor";
-    public static final String BASE_URL = "http://121.42.205.235/logodoctor";
+    public static final String BASE_URL = "http://192.168.1.203/logodoctor";
+    //    public static final String BASE_URL = "http://121.42.205.235/logodoctor";
     private static final String BASE_PAGE_URL = BASE_URL + "/php/";
     private static final String SIGN_UP = BASE_PAGE_URL + "register.php";
     private static final String LOGIN = BASE_PAGE_URL + "login.php";
@@ -41,6 +41,7 @@ public class NetManager {
     private static final String SET_HISTORY_READ = BASE_PAGE_URL + "setHistoryRead.php?id=";
     public static final String FILE_UPLOAD = BASE_PAGE_URL + "uploadFile.php?user=";
     private static final String QUERY_HISTORY_STATE = BASE_PAGE_URL + "queryHistoryState.php?ids=";
+    private static final String DELETE_HISTORY = BASE_PAGE_URL + "deleteHistory.php?user=";
 
     public static void asyncLogin(final Activity activity, @NonNull String name, @NonNull String pwd, final LDCallback callback) {
         netQuery(activity, LOGIN + "?name=" + name + "&password=" + pwd, new OnNetQueryDoneListener() {
@@ -175,7 +176,7 @@ public class NetManager {
      * 多个id用","分割
      * 调用成功，则返回处理好的history的id，否则返回错误信息
      */
-    public static void asynQueryHistoryState(final Activity activity, final String historyIds, final LDCallback callback) {
+    public static void asyncQueryHistoryState(final Activity activity, final String historyIds, final LDCallback callback) {
         if (TextUtils.isEmpty(historyIds)) {
             return;
         }
@@ -191,6 +192,43 @@ public class NetManager {
                 } else {
                     String temp = data.replaceAll(",", "");
                     if (temp.matches("\\d+")) {
+                        netResponse.setObj(data);
+                    } else {
+                        netResponse.setErrorMsg(data);
+                    }
+                }
+                callback.callback(netResponse);
+            }
+        });
+    }
+
+    /**
+     * 删除历史记录
+     *
+     * @param activity
+     * @param userName
+     * @param historyIds 多个id用","分割；为null时，删除全部历史记录
+     * @param callback
+     */
+    public static void asyncDeleteHistory(final Activity activity, final String userName, final String historyIds, final LDCallback callback) {
+        if (TextUtils.isEmpty(userName) && TextUtils.isEmpty(historyIds)) {
+            return;
+        }
+        String url = DELETE_HISTORY + userName;
+        if (!TextUtils.isEmpty(historyIds)) {
+            url += "&&ids=" + historyIds;
+        }
+        netQuery(activity, url, new OnNetQueryDoneListener() {
+            @Override
+            public void onNetQueryDone(String data) {
+                if (callback == null) {
+                    return;
+                }
+                LDResponse<String> netResponse = new LDResponse<>();
+                if (TextUtils.isEmpty(data)) {
+                    netResponse.setObj("");
+                } else {
+                    if (data.matches("\\d+")) {
                         netResponse.setObj(data);
                     } else {
                         netResponse.setErrorMsg(data);

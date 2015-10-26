@@ -31,8 +31,7 @@ public class NetManager {
      * 服务器地址
      */
 //    public static final String BASE_URL = "http://192.168.1.203/logodoctor";
-        public static final String BASE_URL = "http://182.254.157.222:8080/logodoctor";
-//    public static final String BASE_URL = "http://121.42.150.146/logodoctor";
+    public static final String BASE_URL = "http://121.42.205.235/logodoctor";
     private static final String BASE_PAGE_URL = BASE_URL + "/php/";
     private static final String SIGN_UP = BASE_PAGE_URL + "register.php";
     private static final String LOGIN = BASE_PAGE_URL + "login.php";

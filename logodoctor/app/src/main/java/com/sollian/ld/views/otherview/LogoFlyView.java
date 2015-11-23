@@ -342,7 +342,7 @@ public class LogoFlyView extends ViewGroup {
 
         @Override
         public void onLoadSuccess(Bitmap bitmap) {
-            new Palette.Builder(bitmap).generate(new Palette.PaletteAsyncListener() {
+            Palette.generateAsync(bitmap,new Palette.PaletteAsyncListener() {
                 @Override
                 public void onGenerated(Palette palette) {
                     Palette.Swatch swatch = palette.getVibrantSwatch();

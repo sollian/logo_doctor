@@ -55,6 +55,10 @@
             android:name=".views.activity.ObtainLogoActivity"
             android:screenOrientation="portrait"
             />
+        <activity
+            android:name=".views.activity.NewLogoActivity"
+            android:screenOrientation="portrait"
+            />
 
         <service android:name=".utils.poll.PollRemindService"/>
     </application>

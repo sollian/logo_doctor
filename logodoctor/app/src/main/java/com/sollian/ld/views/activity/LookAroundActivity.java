@@ -20,6 +20,7 @@ import com.sollian.ld.utils.LDUtil;
 import com.sollian.ld.views.BaseActivity;
 import com.sollian.ld.views.adapter.LogoSortAdapter;
 import com.sollian.ld.views.fragment.LogoDetailFragment;
+import com.sollian.ld.views.fragment.ObtainLogoSelectFragment;
 import com.sollian.ld.views.otherview.ClearEditText;
 import com.sollian.ld.views.otherview.SideIndexBar;
 import com.sollian.ld.views.titlebar.TitlebarHelper;
@@ -28,6 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LookAroundActivity extends BaseActivity {
+    public static final String KEY_PICK_MODE = "pick_mode";
 
     private List<Logo> dataSource = new ArrayList<>();
 
@@ -75,7 +77,12 @@ public class LookAroundActivity extends BaseActivity {
                 onBackPressed();
             }
         });
-        titlebarHelper.setTitle(R.string.look_around);
+
+        if (getIntent().getBooleanExtra(KEY_PICK_MODE, false)) {
+            titlebarHelper.setTitle(R.string.pick_logo);
+        } else {
+            titlebarHelper.setTitle(R.string.look_around);
+        }
     }
 
     private void getData() {
@@ -113,9 +120,18 @@ public class LookAroundActivity extends BaseActivity {
     private class MyItemClickListener implements AdapterView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            Intent intent = new Intent(LookAroundActivity.this, LogoDetailActivity.class);
-            intent.putExtra(LogoDetailFragment.KEY_ID, adapter.getItem(position).getId());
-            IntentUtil.startActivity(LookAroundActivity.this, intent);
+            Logo logo = adapter.getItem(position);
+            if (getIntent().getBooleanExtra(KEY_PICK_MODE, false)) {
+                Intent intent = new Intent();
+                intent.putExtra(ObtainLogoSelectFragment.KEY_NAME, logo.getName());
+                intent.putExtra(ObtainLogoSelectFragment.KEY_ID, logo.getId());
+                setResult(RESULT_OK, intent);
+                finish();
+            } else {
+                Intent intent = new Intent(LookAroundActivity.this, LogoDetailActivity.class);
+                intent.putExtra(LogoDetailFragment.KEY_ID, logo.getId());
+                IntentUtil.startActivity(LookAroundActivity.this, intent);
+            }
         }
     }
 

@@ -28,11 +28,11 @@ android {
 }
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.nineoldandroids:library:2.4.0'
-    compile 'org.jsoup:jsoup:1.8.3'
-    compile 'org.apache:apache:17'
-    compile 'com.android.support:support-v4:23.0.1'
-    compile 'com.google.code.gson:gson:2.3.1'
-    compile 'com.android.support:palette-v7:23.0.1'
+    //    compile 'com.nineoldandroids:library:2.4.0'
+    //    compile 'org.jsoup:jsoup:1.8.3'
+    //    compile 'org.apache:apache:17'
+    //    compile 'com.android.support:support-v4:23.0.1'
+    //    compile 'com.google.code.gson:gson:2.3.1'
+    //    compile 'com.android.support:palette-v7:23.0.1'
 }
 

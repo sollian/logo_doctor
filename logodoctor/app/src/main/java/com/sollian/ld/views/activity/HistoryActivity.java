@@ -127,12 +127,12 @@ public class HistoryActivity extends BaseActivity {
     }
 
     private void getMoreData() {
-        String minId = "0";
+        String maxId = "0";
         if (!dataSource.isEmpty()) {
-            minId = dataSource.get(dataSource.size() - 1).getId();
+            maxId = dataSource.get(dataSource.size() - 1).getId();
         }
         showProgressDialog(LDUtil.MSG_LOADING);
-        NetManager.asyncQueryHistory(this, minId, new QueryHistoryCallback(true));
+        NetManager.asyncQueryHistory(this, maxId, new QueryHistoryCallback(true));
     }
 
     private class QueryHistoryCallback implements LDCallback {

@@ -26,22 +26,23 @@ public class NetManager {
     private static final String ERROR_DEFAULT = "未知错误";
     private static final String ERROR_NO_DATA = "无数据";
 
-    public static final int LIMIT = 20;
+    public static final int LIMIT = 10;
     /**
      * 服务器地址
      */
-    public static final String BASE_URL = "http://192.168.1.203/logodoctor";
-    //    public static final String BASE_URL = "http://121.42.205.235/logodoctor";
+//    public static final String BASE_URL = "http://10.210.113.48/logodoctor";
+    public static final String BASE_URL = "http://121.42.205.235/logodoctor";
     private static final String BASE_PAGE_URL = BASE_URL + "/php/";
     private static final String SIGN_UP = BASE_PAGE_URL + "register.php";
     private static final String LOGIN = BASE_PAGE_URL + "login.php";
     private static final String QUERY_LOGO_ALL = BASE_PAGE_URL + "getLogo.php";
     private static final String QUERY_LOGO_ID = BASE_PAGE_URL + "getLogo.php?id=";
-    private static final String QUERY_HISTORY = BASE_PAGE_URL + "getHistory.php?minId=";
+    private static final String QUERY_HISTORY = BASE_PAGE_URL + "getHistory.php?maxId=";
     private static final String SET_HISTORY_READ = BASE_PAGE_URL + "setHistoryRead.php?id=";
-    public static final String FILE_UPLOAD = BASE_PAGE_URL + "uploadFile.php?user=";
     private static final String QUERY_HISTORY_STATE = BASE_PAGE_URL + "queryHistoryState.php?ids=";
     private static final String DELETE_HISTORY = BASE_PAGE_URL + "deleteHistory.php?user=";
+    public static final String FILE_UPLOAD = BASE_PAGE_URL + "uploadFile.php?user=";
+    public static final String LOGO_UPLOAD = BASE_PAGE_URL + "uploadLogo.php?";
 
     public static void asyncLogin(final Activity activity, @NonNull String name, @NonNull String pwd, final LDCallback callback) {
         netQuery(activity, LOGIN + "?name=" + name + "&password=" + pwd, new OnNetQueryDoneListener() {
@@ -121,11 +122,11 @@ public class NetManager {
         });
     }
 
-    public static void asyncQueryHistory(final Activity activity, final String minId, final LDCallback callback) {
-        if (TextUtils.isEmpty(minId)) {
+    public static void asyncQueryHistory(final Activity activity, final String maxId, final LDCallback callback) {
+        if (TextUtils.isEmpty(maxId)) {
             return;
         }
-        netQuery(activity, QUERY_HISTORY + minId + "&user=" + LocalManager.syncGetCurUser().getName(), new OnNetQueryDoneListener() {
+        netQuery(activity, QUERY_HISTORY + maxId + "&user=" + LocalManager.syncGetCurUser().getName(), new OnNetQueryDoneListener() {
             @Override
             public void onNetQueryDone(String data) {
                 if (callback != null) {

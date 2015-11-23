@@ -5,6 +5,10 @@
 
     <string name="detail">详细信息</string>
 
+    <string name="pick_logo">选择logo</string>
+
+    <string name="new_logo">新logo</string>
+
     <string name="listfooterview_normal">查看更多</string>
     <string name="listfooterview_ready">松开载入更多</string>
 

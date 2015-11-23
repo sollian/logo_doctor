@@ -1,96 +1,95 @@
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg"
-    android:orientation="vertical"
-    >
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:orientation="vertical"
-        >
+        android:orientation="vertical">
 
         <com.sollian.ld.views.otherview.LogoFlyView
             android:id="@+id/flyView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="gone"
-            />
+            android:visibility="gone" />
 
     </LinearLayout>
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:orientation="vertical"
-        android:padding="@dimen/main_block"
-        >
+        android:layout_height="200dp">
+
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="horizontal"
-            >
+            android:layout_height="200dp"
+            android:orientation="vertical"
+            android:padding="@dimen/main_block">
 
-            <FrameLayout
-                style="@style/MainBlock"
-                >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
 
-                <include
-                    android:id="@+id/take_photo"
-                    layout="@layout/main_block"
-                    />
+                <FrameLayout style="@style/MainBlock">
 
-            </FrameLayout>
+                    <include
+                        android:id="@+id/take_photo"
+                        layout="@layout/main_block" />
 
-            <FrameLayout
-                style="@style/MainBlock"
-                >
+                </FrameLayout>
 
-                <include
-                    android:id="@+id/view_picture"
-                    layout="@layout/main_block"
-                    />
+                <FrameLayout style="@style/MainBlock">
 
-            </FrameLayout>
+                    <include
+                        android:id="@+id/view_picture"
+                        layout="@layout/main_block" />
 
-        </LinearLayout>
+                </FrameLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="horizontal"
-            >
+            </LinearLayout>
 
-            <FrameLayout
-                style="@style/MainBlock"
-                >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
 
-                <include
-                    android:id="@+id/look_around"
-                    layout="@layout/main_block"
-                    />
+                <FrameLayout style="@style/MainBlock">
 
-            </FrameLayout>
+                    <include
+                        android:id="@+id/look_around"
+                        layout="@layout/main_block" />
 
-            <FrameLayout
-                style="@style/MainBlock"
-                >
+                </FrameLayout>
 
-                <include
-                    android:id="@+id/history"
-                    layout="@layout/main_block"
-                    />
+                <FrameLayout style="@style/MainBlock">
 
-            </FrameLayout>
+                    <include
+                        android:id="@+id/history"
+                        layout="@layout/main_block" />
+
+                </FrameLayout>
+
+            </LinearLayout>
 
         </LinearLayout>
 
-    </LinearLayout>
+        <TextView
+            android:id="@+id/new_logo"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:background="@drawable/btn_round"
+            android:gravity="center"
+            android:text="新logo"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@android:color/white" />
+
+    </FrameLayout>
 
 </LinearLayout>

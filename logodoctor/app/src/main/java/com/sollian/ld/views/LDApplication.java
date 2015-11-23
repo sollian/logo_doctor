@@ -3,6 +3,7 @@ package com.sollian.ld.views;
 import android.app.Application;
 
 import com.sollian.ld.utils.LDUtil;
+import com.sollian.ld.utils.SharePrefUtil;
 import com.sollian.ld.utils.poll.PollUtil;
 
 /**
@@ -26,6 +27,7 @@ public class LDApplication extends Application {
          */
 //        AVOSCloud.initialize(this, "l9I3JyCSfvbrQBy4X5Sdff6f", "0N6seNcJCdjpfgxlFNs9tXYP");
 
+        new SharePrefUtil.RemindPref().setRemindQueryValid();
         PollUtil.startPoll(this);
     }
 

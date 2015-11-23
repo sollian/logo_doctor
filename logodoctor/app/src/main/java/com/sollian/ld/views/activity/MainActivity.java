@@ -9,6 +9,7 @@ import com.sollian.ld.R;
 import com.sollian.ld.business.db.LogoDB;
 import com.sollian.ld.models.Logo;
 import com.sollian.ld.utils.IntentUtil;
+import com.sollian.ld.utils.NotifyUtil;
 import com.sollian.ld.utils.cache.CacheDispatcher;
 import com.sollian.ld.utils.cache.RemindCache;
 import com.sollian.ld.views.BaseActivity;
@@ -23,6 +24,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private TextView tvViewPic;
     private TextView tvLookAround;
     private TextView tvHistory;
+    private TextView tvNew;
     private LogoFlyView flyView;
 
     @Override
@@ -55,6 +57,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         tvHistory = (TextView) vHistory.findViewById(R.id.block_title);
         tvHistory.setText(R.string.history);
         tvHistory.setOnClickListener(this);
+        tvNew = (TextView) findViewById(R.id.new_logo);
+        tvNew.setOnClickListener(this);
 
         flyView = (LogoFlyView) findViewById(R.id.flyView);
         initFlyView();
@@ -107,6 +111,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             intent = new Intent(this, LookAroundActivity.class);
         } else if (view == tvHistory) {
             intent = new Intent(this, HistoryActivity.class);
+            NotifyUtil.cancelAll(this);
+        } else if(view == tvNew) {
+            intent = new Intent(this, NewLogoActivity.class);
         }
         if (intent != null) {
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

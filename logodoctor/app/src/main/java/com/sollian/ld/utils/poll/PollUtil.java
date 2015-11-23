@@ -32,13 +32,10 @@ public class PollUtil {
     }
 
     public static void stopPoll(Context context) {
-        if (!TextUtils.isEmpty(new SharePrefUtil.RemindPref().getRemindIds())) {
-            return;
-        }
         AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(context, PollRemindService.class);
         PendingIntent pendingIntent = PendingIntent.getService(context, 0,
-            intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            intent, PendingIntent.FLAG_CANCEL_CURRENT);
         manager.cancel(pendingIntent);
     }
 }

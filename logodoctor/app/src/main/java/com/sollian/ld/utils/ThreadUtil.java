@@ -31,7 +31,7 @@ public class ThreadUtil {
     private static void init() {
         if (mThreadPool == null) {
             mThreadPool = new ThreadPoolExecutor(0, mMaxPoolSize, 60L, TimeUnit.SECONDS,
-                    new LinkedBlockingQueue<Runnable>());
+                    new LinkedBlockingQueue<Runnable>(100));
         }
     }
 

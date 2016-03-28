@@ -11,6 +11,8 @@ if (is_array($_GET) && count($_GET) > 0) {
         $logoPath = $_GET["path"];
     }
 }
+echo $logoPath;
 if (isset($logoPath)) {
-    system("mysift.exe $logoPath");
+    //system("mysift.exe " . $logoPath);
+    system("mysurf.exe " . $logoPath);
 }

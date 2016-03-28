@@ -4,7 +4,7 @@
     android:background="@drawable/bg"
     android:orientation="vertical">
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
@@ -16,7 +16,14 @@
             android:layout_height="match_parent"
             android:visibility="gone" />
 
-    </LinearLayout>
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_margin="10dp"
+            android:onClick="LogOut"
+            android:src="@drawable/user" />
+
+    </FrameLayout>
 
     <FrameLayout
         android:layout_width="match_parent"

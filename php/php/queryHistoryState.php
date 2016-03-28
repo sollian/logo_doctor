@@ -43,7 +43,7 @@ if (!isset($ids)) {
                         if ($logoName) {
                             $logoName = trim(substr($logoName, 2));
                             //根据logoName获取logoId
-                            $sql = "select * from " . TABLE_LOGO . " where `img`='$logoName'";
+                            $sql = "select * from " . TABLE_LOGO . " where `img`='$logoName' OR `moreImg` LIKE '$logoName'";
                             $result = $mysql->query($sql);
                             $value = $mysql->fetcharray($result);
                             $logo = Logo::getLogo($value);

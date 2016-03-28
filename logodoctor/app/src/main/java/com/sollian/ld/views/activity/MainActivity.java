@@ -1,5 +1,7 @@
 package com.sollian.ld.views.activity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -10,9 +12,11 @@ import com.sollian.ld.business.db.LogoDB;
 import com.sollian.ld.models.Logo;
 import com.sollian.ld.utils.IntentUtil;
 import com.sollian.ld.utils.NotifyUtil;
+import com.sollian.ld.utils.SharePrefUtil;
 import com.sollian.ld.utils.cache.CacheDispatcher;
 import com.sollian.ld.utils.cache.RemindCache;
 import com.sollian.ld.views.BaseActivity;
+import com.sollian.ld.views.LDApplication;
 import com.sollian.ld.views.fragment.LogoDetailFragment;
 import com.sollian.ld.views.otherview.LogoFlyView;
 
@@ -112,13 +116,30 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         } else if (view == tvHistory) {
             intent = new Intent(this, HistoryActivity.class);
             NotifyUtil.cancelAll(this);
-        } else if(view == tvNew) {
+        } else if (view == tvNew) {
             intent = new Intent(this, NewLogoActivity.class);
         }
         if (intent != null) {
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             IntentUtil.startActivity(this, intent);
         }
+    }
+
+    public void LogOut(View view) {
+        new AlertDialog.Builder(this).setMessage("确定要登出吗？")
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        SharePrefUtil.UserPref userPref = new SharePrefUtil.UserPref();
+                        userPref.setUser(null);
+                        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                        startActivity(intent);
+                        finish();
+                        dialog.dismiss();
+                    }
+                })
+                .setNegativeButton("取消", null)
+                .show();
     }
 
     private class LogoClickListener implements View.OnClickListener {

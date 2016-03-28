@@ -90,11 +90,16 @@ public class SharePrefUtil {
         private static final String KEY_USER_PWD = "user_password";
 
         public void setUser(User user) {
+            String name, password;
             if (user == null) {
-                return;
+                name = null;
+                password = null;
+            } else {
+                name = user.getName();
+                password = user.getPassword();
             }
-            sharePrefUtil.putString(KEY_USER_NAME, user.getName());
-            sharePrefUtil.putString(KEY_USER_PWD, user.getPassword());
+            sharePrefUtil.putString(KEY_USER_NAME, name);
+            sharePrefUtil.putString(KEY_USER_PWD, password);
         }
 
         public User getUser() {

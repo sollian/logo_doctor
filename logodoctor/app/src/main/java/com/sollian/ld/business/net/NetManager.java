@@ -12,9 +12,15 @@ import com.sollian.ld.business.db.LogoDB;
 import com.sollian.ld.business.local.LocalManager;
 import com.sollian.ld.models.History;
 import com.sollian.ld.models.Logo;
+import com.sollian.ld.utils.LogUtil;
 import com.sollian.ld.utils.ThreadUtil;
 import com.sollian.ld.utils.http.HttpManager;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.message.BasicNameValuePair;
+
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,9 +49,22 @@ public class NetManager {
     private static final String DELETE_HISTORY = BASE_PAGE_URL + "deleteHistory.php?user=";
     public static final String FILE_UPLOAD = BASE_PAGE_URL + "uploadFile.php?user=";
     public static final String LOGO_UPLOAD = BASE_PAGE_URL + "uploadLogo.php?";
+    private static final String TAG = "NetManager";
 
     public static void asyncLogin(final Activity activity, @NonNull String name, @NonNull String pwd, final LDCallback callback) {
-        netQuery(activity, LOGIN + "?name=" + name + "&password=" + pwd, new OnNetQueryDoneListener() {
+        ArrayList<BasicNameValuePair> params = new ArrayList<>();
+        params.add(new BasicNameValuePair("name", name));
+        params.add(new BasicNameValuePair("password", pwd));
+        // 封装请求参数的实体对象
+        UrlEncodedFormEntity entity;
+        try {
+            entity = new UrlEncodedFormEntity(params, HttpManager.CHARSET);
+        } catch (UnsupportedEncodingException e) {
+            LogUtil.e(TAG, "sendArticle UnsupportedEncodingException");
+            return;
+        }
+
+        netQuery(activity, LOGIN, new OnNetQueryDoneListener() {
             @Override
             public void onNetQueryDone(String data) {
                 if (callback != null) {
@@ -54,11 +73,23 @@ public class NetManager {
                     callback.callback(netResponse);
                 }
             }
-        });
+        }, entity);
     }
 
     public static void asyncSignUp(final Activity activity, @NonNull final String name, @NonNull String pwd, final LDCallback callback) {
-        netQuery(activity, SIGN_UP + "?name=" + name + "&password=" + pwd, new OnNetQueryDoneListener() {
+        ArrayList<BasicNameValuePair> params = new ArrayList<>();
+        params.add(new BasicNameValuePair("name", name));
+        params.add(new BasicNameValuePair("password", pwd));
+        // 封装请求参数的实体对象
+        UrlEncodedFormEntity entity;
+        try {
+            entity = new UrlEncodedFormEntity(params, HttpManager.CHARSET);
+        } catch (UnsupportedEncodingException e) {
+            LogUtil.e(TAG, "sendArticle UnsupportedEncodingException");
+            return;
+        }
+
+        netQuery(activity, SIGN_UP, new OnNetQueryDoneListener() {
             @Override
             public void onNetQueryDone(String data) {
                 if (callback != null) {
@@ -72,7 +103,7 @@ public class NetManager {
                     callback.callback(netResponse);
                 }
             }
-        });
+        }, entity);
     }
 
     public static void asyncQueryAllLogo(final Activity activity, final LDCallback callback) {
@@ -244,13 +275,23 @@ public class NetManager {
      * activity为null时，回调运行在异步线程；否则运行在主线程
      */
     private static void netQuery(final Activity activity, final String url, final OnNetQueryDoneListener l) {
+        netQuery(activity, url, l, null);
+    }
+
+    private static void netQuery(final Activity activity, final String url, final OnNetQueryDoneListener l, final HttpEntity entity) {
         if (TextUtils.isEmpty(url)) {
             return;
         }
         ThreadUtil.execute(new Runnable() {
             @Override
             public void run() {
-                final String data = HttpManager.getInstance().getHttp(activity, url);
+                String data;
+                if (entity == null) {
+                    data = HttpManager.getInstance().getHttp(activity, url);
+                } else {
+                    data = HttpManager.getInstance().postHttp(activity, url, entity);
+                }
+                final String response = data;
                 if (l == null) {
                     return;
                 }
@@ -260,7 +301,7 @@ public class NetManager {
                     activity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            l.onNetQueryDone(data);
+                            l.onNetQueryDone(response);
                         }
                     });
                 }

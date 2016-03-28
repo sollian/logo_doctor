@@ -4,7 +4,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
 
-import com.sollian.ld.business.db.dbhelper.DbHelper;
+import com.sollian.ld.business.db.dbhelper.DBHelper;
 import com.sollian.ld.models.Logo;
 import com.sollian.ld.utils.LogUtil;
 import com.sollian.ld.utils.ThreadUtil;
@@ -21,7 +21,7 @@ public class LogoDB {
     private SQLiteDatabase db;
 
     public LogoDB() {
-        db = new DbHelper(LDApplication.getInstance()).getWritableDatabase();
+        db = new DBHelper(LDApplication.getInstance()).getWritableDatabase();
     }
 
     public List<Logo> queryAll() {

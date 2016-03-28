@@ -9,11 +9,11 @@ import com.sollian.ld.models.Logo;
 /**
  * Created by sollian on 2015/10/12.
  */
-public class DbHelper extends SQLiteOpenHelper {
+public class DBHelper extends SQLiteOpenHelper {
     private static final String DB_NAME = "mydb.db";
     private static final int VERSION = 1;
 
-    public DbHelper(Context context) {
+    public DBHelper(Context context) {
         super(context, DB_NAME, null, VERSION);
     }
 
